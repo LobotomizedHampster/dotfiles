@@ -1,9 +1,9 @@
-# MY DOTFILES #
+# MY DOTFILES 
 
 these are all my janky lil dotfiles
 they're being managed with stow and git
 
-## FILES BEING MANGED ##
+## FILES BEING MANGED
 
 | FILE       | DESCRIPTION                 |
 |------------|-----------------------------|
@@ -15,17 +15,25 @@ they're being managed with stow and git
 | .local/bin | custom commands             |
 
 
-## HOW TO ##
+## HOW TO
 
 couple handful of commands to help with managing the dotfiles
 
-### GIT & GITHUB ###
+### GIT & GITHUB
 
-#### ADDING FILES TO GIT ####
+#### ADDING FILES TO GIT
 
-#### PUSHING TO GITHUB ####
+#### PUSHING TO GITHUB
 
 
-### STOW ###
+### STOW 
 
-### ADDING NEW FILES TO STOW ###
+### ADDING NEW FILES TO STOW 
+
+run code below:
+```
+cp ~/path/to/new/file ~/.dotfiles/path/to/new/file # copy files to .dotfiles
+cd ~/.dotfiles # move into .dotfiles
+stow --adopt . # remake all the symlinks
+```
+
