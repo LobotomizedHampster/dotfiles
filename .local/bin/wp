@@ -1,0 +1,42 @@
+#!/bin/bash
+source "$HOME/.bash_env"
+
+filename="$(basename $2)"
+file_path="$STUFF_PATH/Downloads/wallpapers/"
+full_fn="$file_path/$filename"
+
+
+if [ $1 == "-1" ]; then
+	wget "$2" -nc -O $STUFF_PATH/Downloads/wallpapers/"$filename"
+	nitrogen --head=0 --set-zoom-fill --save $full_fn
+
+elif [ $1 == "-2" ]; then
+	wget "$2" -nc -O $STUFF_PATH/Downloads/wallpapers/"$filename"
+	nitrogen --head=1 --set-zoom-fill --save $full_fn
+
+elif [ $1 == "-3" ]; then
+	wget "$2" -nc -O $STUFF_PATH/Downloads/wallpapers/"$filename"
+	nitrogen --set-zoom-fill --save $full_fn
+
+
+elif [ $1 == "-f1" ]; then
+	nitrogen --head=0 --set-zoom-fill --save $2
+
+elif [ $1 == "-f2" ]; then
+	nitrogen --head=1 --set-zoom-fill --save $2
+
+elif [ $1 == "-f3" ]; then
+	nitrogen --set-zoom-fill --save $2
+
+
+elif [ $1 == "-0" ]; then
+	nitrogen --set-zoom-fill --save "$STUFF_PATH/Downloads/wallpapers/black.png"
+
+elif [ $# -eq 0 ]; then
+	ranger "$full_fn" \
+  --cmd='set show_hidden=false'
+
+
+else
+	echo "wrong argument. must include either -0, -1, -2 -3, or no arguments"
+fi

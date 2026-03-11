@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source "$HOME/.bash_env"
+
+# encrypt: 7z a -t7z archive_name.7z folder_name/ -p -mhe=on
+DECRYPTED_SOURCE="${DECRYPTED%/*}"
+
+encrypt() {
+    7z a -t7z -mx=9 -mhe=on "$ENCRYPTED" "$DECRYPTED/" && \
+    [[ -d "$DECRYPTED" ]] && rm -r "$DECRYPTED" && \
+    cd "$HOME"
+}
+
+ARG="$1"
+if [[ $ARG = "e" || $ARG = "-e" || $ARG = "--encrypt" ]]; then
+    encrypt
+else
+    7z x "$ENCRYPTED" -o"$DECRYPTED_SOURCE" && \
+    cd "$DECRYPTED" && \
+    "$FILE_MGR" && \
+    encrypt
+fi
+
+
+

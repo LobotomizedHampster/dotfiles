@@ -1,0 +1,4 @@
+#!/bin/bash
+source "$HOME/.bash_env"
+
+$EDITOR "$DOCUMENTS_PATH/to-do"
