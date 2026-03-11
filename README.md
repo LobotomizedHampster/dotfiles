@@ -1,7 +1,7 @@
 # MY DOTFILES 
 
-these are all my janky lil dotfiles
-they're being managed with stow and git
+- these are all my janky lil dotfiles
+- they're being managed with stow and git
 
 ## FILES BEING MANGED
 
@@ -17,23 +17,16 @@ they're being managed with stow and git
 
 ## HOW TO
 
-couple handful of commands to help with managing the dotfiles
+- couple handful of commands to help with managing the dotfiles
 
-### GIT & GITHUB
-
-#### ADDING FILES TO GIT
-
-#### PUSHING TO GITHUB
-
-
-### STOW 
-
-### ADDING NEW FILES TO STOW 
+### ADDING FILES TO STOW & GITHUB
 
 run code below:
 ```
 cp ~/path/to/new/file ~/.dotfiles/path/to/new/file # copy files to .dotfiles
 cd ~/.dotfiles # move into .dotfiles
-stow --adopt . # remake all the symlinks
+stow --adopt . # remake all the symlinks with stow
+git add . # add all files to commit
+git commit -m "message" # commit the files
+git push # push the files to GitHub
 ```
-
