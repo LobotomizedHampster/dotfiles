@@ -30,7 +30,13 @@ os.environ["PATH"] += os.pathsep + os.path.expanduser("~/.local/bin")
 
 mod = "mod4" # Sets mod key to windows/meta key
 alt_mod = "mod1" # Sets an alternate mod key as alt
-terminal = "kitty"
+
+# Apps from .bash_env (sourced in .xinitrc)
+terminal = os.environ.get("TERMINAL")
+file_manager = str(os.environ.get("FILE_MANAGER_FULL"))
+browser = str(os.environ.get("BROWSER"))
+music = str(os.environ.get("MUSIC"))
+
 
 
 ###############################
@@ -80,6 +86,12 @@ keys = [
     Key([mod], "F9",  lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="mute audio"),
     Key([mod], "F8",  lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%"),  desc="increase audio"),
     Key([mod], "F7",  lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1%"),  desc="lower audio"),
+
+    # Launch apps
+    Key([mod], "1",      lazy.spawn(browser), desc="launch browser"),
+    Key([mod], "2",      lazy.spawn(file_manager), desc="launch file manager"),
+    Key([mod], "3",      lazy.spawn(music), desc="launch music"),
+
 
 
 ]
@@ -250,6 +262,7 @@ screens = [
 ###          HOOKS          ###
 ###############################
 
+# Round qtile bar
 #   @hook.subscribe.startup_complete
 #   def set_bar_property():
 #       for screen in qtile.screens:
