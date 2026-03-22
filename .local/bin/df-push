@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source "$HOME/.bash_env"
+
+read -rp "git commit message: " MESSAGE
+
+# change dir into path of dotfiles
+cd "$CONFIG_PATH"
+stow . --adopt # check for modified and new files and add symlinks
+git add . # add all files to git staging area
+git commit -m "$MESSAGE" # commit the staged files to a snapshot with a message
+git push # upload new commit to git server (e.g. GitHub)

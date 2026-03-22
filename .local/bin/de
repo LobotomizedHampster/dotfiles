@@ -5,19 +5,33 @@ source "$HOME/.bash_env"
 # encrypt: 7z a -t7z archive_name.7z folder_name/ -p -mhe=on
 DECRYPTED_SOURCE="${DECRYPTED%/*}"
 
+# function checks if the folder is actully decrypted
+# then it deletes the old folder inside the archive
+# then it adds the updated version to the archive
+# then deletes the folder and temp file
+# (which are safe to delete because they're now encrypted in the archive)
 encrypt() {
-    7z a -t7z -mx=9 -mhe=on "$ENCRYPTED" "$DECRYPTED/" && \
-    [[ -d "$DECRYPTED" ]] && rm -r "$DECRYPTED" && \
-    cd "$HOME"
+    if [[ -d "$DECRYPTED" ]]; then
+        7z d "$ENCRYPTED" "$DECRYPTED/" && \
+        7z a -t7z -mx=9 -mhe=on "$ENCRYPTED" "$DECRYPTED/" && \
+        [[ -d "$DECRYPTED" ]] && rm -r "$DECRYPTED" && \
+        rm "$DND_FILE"
+    fi
 }
 
+# checks for "encrypt" flag
 ARG="$1"
 if [[ $ARG = "e" || $ARG = "-e" || $ARG = "--encrypt" ]]; then
+    # skips the decryption and just re-encrypts
     encrypt
 else
+    # extracts the files from the archive
+    # then changes directory inti the archive
+    # then opens the file manager
+    # then re-encrypts after closing the file manager 
     7z x "$ENCRYPTED" -o"$DECRYPTED_SOURCE" && \
     cd "$DECRYPTED" && \
-    "$FILE_MGR" && \
+    "$FILE_MGR"
     encrypt
 fi
 

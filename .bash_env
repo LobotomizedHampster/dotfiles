@@ -15,8 +15,8 @@ export STUFF_PATH="$HOME/my_stuff"
 export DOCUMENTS_PATH="$HOME/my_stuff/Documents"
 export ENCRYPTED="$DOCUMENTS_PATH/other/.st_logs-103985.7z"
 export DECRYPTED="$DOCUMENTS_PATH/other/.encrypted"
-
-
+export CONFIG_PATH="$HOME/.dotfiles"
+export DND_FILE="$DOCUMENTS_PATH/other/DO-NOT-DELETE.txt"
 
 # colorscheme (rrggbb)
 export OPACITY="65"
