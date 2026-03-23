@@ -1,235 +1,177 @@
 -- # NVIM CONFIG # --
 
--- ## LAZY ## --
+-- ## FILES ## --
 
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
+require("user.commands")  -- custom commands and keybinds
+require("user.packages")  -- package manager and packages
+require("user.options")   -- default options
+require("user.filetypes") -- Custom syntax highlighting for drafts (.dft)
 
-
--- ### LAZY PLUGINS ### ---
-
-local plugins = {
-  -- Table plugin
-  {
-    "Kicamon/markdown-table-mode.nvim",
-    config = function()
-      require("markdown-table-mode").setup()
-    end,
-  },
-
-  -- Unicode Completion
-  {
-    "chrisbra/unicode.vim",
-    event = "InsertEnter", -- load on insert mode
-    config = function()
-      vim.api.nvim_set_keymap(
-        'i',                   -- mode: insert
-        '<S-tab>',           -- lhs (the key sequence)
-        '<Plug>(DigraphComplete)', -- rhs (the mapping target)
-        { noremap = false, silent = true } -- options: allow <Plug>, silent
-      )
-    end
-  },
-
--- Syntax Highlighting
-  {
-      "nvim-treesitter/nvim-treesitter",
-      branch = "main",  -- New rewritten branch
-      build = ":TSUpdate",
-      config = function()
-        local ts = require("nvim-treesitter")
-        local parsers = { 
-            "lua", 
-            "python", 
-            "vim", 
-            "vimdoc", 
-            "bash", 
-            "markdown", 
-            "rust" }
-  
-        for _, parser in ipairs(parsers) do
-          pcall(ts.install, parser)
-        end
-        vim.api.nvim_create_autocmd("FileType", {
-          callback = function()
-            pcall(vim.treesitter.start)
-          end,
-        })
-      end,
-    },
-
-  -- Grammer checker
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      vim.lsp.config.ltex = {
-        cmd = { "ltex-ls" },
-        filetypes = { "markdown", "text", "draft" },
-        settings = {
-          ltex = {
-            language = "en-US",
-          },
-        },
-      }
-      vim.lsp.enable("ltex")
-    end,
-  }
-}
-
--- Load plugins
-require("lazy").setup(plugins)
-
-
-
--- ## SETTINGS ## ---
-
--- ### CUSTOM PLUGINS ### --
-
--- checkbox plugin
-vim.keymap.set("n", " ", 
-    ":lua require('toggle-checkbox').toggle()<CR>", 
-    { silent = true })
-    require("toggle-checkbox")
-
-
--- ### OPTIONS ### --
-
-vim.o.linebreak = true -- continue lines at next space
-local default_colorcolumn = "81"
-vim.opt.colorcolumn = default_colorcolumn -- set a color column
--- set tab width
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
-vim.opt.expandtab = true -- makes tabs spaces instead
-
-vim.o.number = true -- add line numbers
-vim.opt.clipboard = "unnamedplus" -- clipboard is the same as nvim buffer
--- hide grammar checks
-vim.diagnostic.config({
-    signs =  false,
-    underline = false,
-})
-
-
-
--- ### COMMANDS ### -- 
-
--- Settings for writing
-local writing_enabled = false -- disable writing cmd by default 
-vim.api.nvim_create_user_command("Wr", function()
-    writing_enabled = not writing_enabled
-
-    if writing_enabled then
-        -- options
-        vim.opt.linebreak = true
-        vim.opt.breakindent = true
-        vim.opt.spell = true
-        vim.o.number = false -- disable line numbers
-        vim.opt.colorcolumn = "" -- disable color column
-
-        -- keymaps
-        vim.keymap.set('n', 'j', 'gj')
-        vim.keymap.set('n', 'k', 'gk')
-        vim.keymap.set('n', '<Up>', 'gk')
-        vim.keymap.set('n', '<Down>', 'gj')
-        vim.keymap.set('n', '<ScrollWheelUp>', '3gk')
-        vim.keymap.set('n', '<ScrollWheelDown>', '3gj')
-        vim.keymap.set('n', '<Return>', 'z=')
-
-        print("Writing ON")
-    else
-        -- reset options
-        vim.opt.linebreak = not vim.opt.linebreak
-        vim.opt.breakindent = not vim.opt.breakindent
-        vim.o.number = not vim.o.number
-        vim.opt.colorcolumn = default_colorcolumn
-
-        -- delete keymaps
-        vim.keymap.del('n', 'j')
-        vim.keymap.del('n', 'k')
-        vim.keymap.del('n', '<Up>')
-        vim.keymap.del('n', '<Down>')
-        vim.keymap.del('n', '<ScrollWheelUp>')
-        vim.keymap.del('n', '<ScrollWheelDown>')
-        vim.keymap.del('n', '<Return>')
-
-        print("Writing OFF")
-    end
-end, {})
-
-local editing_enabled = false
-vim.api.nvim_create_user_command("Ed", function()
-    editing_enabled = not editing_enabled
-
-    vim.diagnostic.config({
-        signs = editing_enabled,
-        underline = editing_enabled,
-    })
-
-    if editing_enabled then
-        -- options
-        vim.opt.spell = true
-
-        -- keymaps
-        vim.keymap.set('n', 'z+', function()
-            vim.diagnostic.open_float()
-        end)
-
-        print("Editing ON")
-    else
-        -- reset options
-        vim.opt.spell = not vim.opt.spell
-        vim.cmd("LspStop")
-
-        -- delete keymaps
-        vim.keymap.del('n', 'z+')
-
-        print("Writing OFF")
-    end
-end, {})
-
-
-
--- ### KEYBINDS ### --
-
--- open nvim config files in a split window
-vim.api.nvim_create_user_command("EditConfig", function()
-    vim.cmd.split(vim.fn.stdpath("config"))
-end, {})
-
--- Set ctrl + c to copy text
-vim.keymap.set("v", "<C-c>", "\"+y",  { noremap = true, silent = true })
--- Set ctrl + x to cut text
-vim.keymap.set("v", "<C-x>", "d",  { noremap = true, silent = true })
-
-
--- ### OPTIONS ### --
-
-vim.o.linebreak = true -- continue lines at next space
-vim.opt.colorcolumn = "81" -- set a color column
--- set tab width
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
-vim.opt.expandtab = true -- makes tabs spaces instead
-
-vim.o.number = true -- Add numbers to side
-vim.opt.clipboard = "unnamedplus" -- clipboard is the same as nvim buffer
-
-
--- ### OTHER THINGS ### --
-
-require("filetypes") -- Custom syntax highlighting for drafts
 vim.cmd.colorscheme("doodle") -- set color scheme
+
+
+vim.g.mapleader = "\\"      -- sets leader to SPACE
+
+--[[
+function check_word ()
+  local word = vim.fn.expand("<cword>")
+  print(word)
+  local word = vim.fn.expand("<cword>")
+  local suggestions = vim.fn.spellsuggest(word)
+
+  print(vim.inspect(suggestions))
+  
+  local formatted_suggestions = {}
+
+  for i, pair in ipairs(suggestions) do
+    table.insert(formatted_suggestions, {
+        text = pair
+    })
+  end
+
+  for i, f in ipairs(formatted_suggestions) do
+      print(f.text)
+  end
+
+end
+--]]
+--[[
+function my_picker()
+  local pickers = require('telescope.pickers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+
+  pickers.new({}, {
+    prompt_title = "My Picker",
+    finder = finders.new_table({
+      results = {
+        { text = "Config", path = "~/.config/nvim/init.lua" },
+        { text = "Plugins", path = "~/.config/nvim/lua/plugins.lua" }
+      },
+      entry_maker = function(entry)
+        return {
+          value = entry,
+          display = entry.text,
+          ordinal = entry.text
+        }
+      end
+    }),
+    sorter = conf.generic_sorter({})
+  }):find()
+end
+--]]
+
+--[[
+function my_picker()
+  local actions = require('telescope.actions')
+  local action_state = require('telescope.actions.state')
+  local pickers = require('telescope.pickers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+
+
+
+  local word = vim.fn.expand("<cword>")
+  print(word)
+  local word = vim.fn.expand("<cword>")
+  local suggestions = vim.fn.spellsuggest(word)
+
+  print(vim.inspect(suggestions))
+  
+  local formatted_suggestions = {}
+
+  for i, pair in ipairs(suggestions) do
+    table.insert(formatted_suggestions, {
+        text = i .. ": " .. pair,
+        value = pair
+    })
+  end
+
+  pickers.new({}, {
+    prompt_title = "Pick Spelling",
+    finder = finders.new_table({
+      results = formatted_suggestions,
+
+      entry_maker = function(entry)
+        return {
+          value = entry.value,
+          display = entry.text,
+          ordinal = entry.text
+        }
+      end
+    }),
+    sorter = conf.generic_sorter({}),
+
+  attach_mappings = function(_, _)
+    actions.select_default:replace(function(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      actions.close(prompt_bufnr)
+
+      vim.cmd("normal! ciw" .. selection.value)
+
+      -- go back to normal mode
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    end)
+    return true
+  end
+  }):find()
+end
+--]]
+
+-- gets spelling results from a word using telescope, then corrects the word
+function my_picker()
+  local actions = require('telescope.actions')
+  local action_state = require('telescope.actions.state')
+  local pickers = require('telescope.pickers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+
+  local word = vim.fn.expand("<cword>") -- get word under the cursor
+
+   -- get the spelling options for the word
+  local suggestions = vim.fn.spellsuggest(word) 
+  local formatted_suggestions = {}
+
+  -- format the spelling results correctly
+  for i, pair in ipairs(suggestions) do
+    table.insert(formatted_suggestions, {
+        text = i .. " " .. pair, -- put a number next to the string
+        value = pair
+    })
+  end
+  
+  -- create a custom picker with our formatted spelling table
+  pickers.new({}, {
+    prompt_title = "Pick Spelling", -- title of picker
+    finder = finders.new_table({
+      results = formatted_suggestions, -- the results shown
+
+      entry_maker = function(entry)
+        return {
+          value = entry.value, -- what the selection does
+          display = entry.text, -- what is displayed as the selection
+          ordinal = entry.text
+        }
+      end
+    }),
+    sorter = conf.generic_sorter({}), -- how the options are shown
+
+  attach_mappings = function(_, _)
+    actions.select_default:replace(function(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      actions.close(prompt_bufnr)
+
+      -- replaces the word with the selection
+      vim.cmd("normal! ciw" .. selection.value)
+
+      -- go back to normal mode
+      vim.api.nvim_feedkeys(
+          vim.api.nvim_replace_termcodes(
+              "<Esc>", true, false, true), 
+          "n", true)
+    end)
+    return true
+  end
+  }):find()
+end
+
