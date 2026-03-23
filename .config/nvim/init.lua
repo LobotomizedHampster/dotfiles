@@ -135,8 +135,9 @@ function my_picker()
   -- format the spelling results correctly
   for i, pair in ipairs(suggestions) do
     table.insert(formatted_suggestions, {
-        text = i .. " " .. pair, -- put a number next to the string
-        value = pair
+        text = i .. ": " .. pair, -- put a number next to the string
+        value = pair,
+        search = i .. " "
     })
   end
   
@@ -150,7 +151,7 @@ function my_picker()
         return {
           value = entry.value, -- what the selection does
           display = entry.text, -- what is displayed as the selection
-          ordinal = entry.text
+          ordinal = entry.search -- what message is actully being searched 
         }
       end
     }),

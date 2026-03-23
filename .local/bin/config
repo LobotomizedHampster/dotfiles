@@ -2,6 +2,7 @@
 
 source "$HOME/.bash_env"
 
+CHOICE="$1"
 
 # print options
 printf "Choose an option: \n
@@ -22,7 +23,7 @@ printf "Choose an option: \n
 
 "
 
-# get input
+# get input if no arg supplied
 read -rp "enter a value: " CHOICE
 
 CONFIG_PATH="$HOME/.dotfiles" # path for config files

@@ -96,8 +96,13 @@ function check_spelling()
   -- format the spelling results correctly
   for i, pair in ipairs(suggestions) do
     table.insert(formatted_suggestions, {
-        text = i .. " " .. pair, -- put a number next to the string
-        value = pair
+        text = i .. ": " .. pair, -- put a number next to the string
+        value = pair,
+        
+        -- ok so really stupid, but since the other numbers can appear first,
+        -- a cheeky lil way you can get around this is by also looking for the
+        -- following character, which always happens to be a :
+        search = i .. ":",
     })
   end
   
@@ -111,7 +116,7 @@ function check_spelling()
         return {
           value = entry.value, -- what the selection does
           display = entry.text, -- what is displayed as the selection
-          ordinal = entry.text
+          ordinal = entry.search -- what the search engine ranks
         }
       end
     }),
