@@ -33,7 +33,7 @@ alt_mod = "mod1" # Sets an alternate mod key as alt
 
 # Apps from .bash_env (sourced in .xinitrc)
 terminal = os.environ.get("TERMINAL")
-file_manager = str(os.environ.get("FILE_MANAGER_FULL"))
+file_manager = str(os.environ.get("FILE_MGR_FULL"))
 browser = str(os.environ.get("BROWSER"))
 music = str(os.environ.get("MUSIC"))
 
@@ -45,55 +45,52 @@ music = str(os.environ.get("MUSIC"))
 
 keys = [
     # Switch between windows
-    Key([mod], "h", lazy.layout.left(),  desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(),  desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(),    desc="Move focus up"),
+    Key([mod], "h", lazy.layout.left()),
+    Key([mod], "l", lazy.layout.right()),
+    Key([mod], "j", lazy.layout.down()),
+    Key([mod], "k", lazy.layout.up()),
 
     # Move windows
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(),  desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(),  desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(),    desc="Move window up"),
+    Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_right()),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
 
     # Grow windows
-    Key([mod, "control"], "h", lazy.layout.grow_left(),  desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(),  desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(),    desc="Grow window up"),
+    Key([mod, "control"], "h", lazy.layout.grow_left()),
+    Key([mod, "control"], "l", lazy.layout.grow_right()),
+    Key([mod, "control"], "j", lazy.layout.grow_down()),
+    Key([mod, "control"], "k", lazy.layout.grow_up()),
 
-    # Programs
-    Key([mod],            "return", lazy.spawn(terminal),          desc="Launch terminal"),
-    Key([mod],            "w",      lazy.window.kill(),            desc="Kill focused window"),
-    Key([mod],            "r",      lazy.spawncmd(),               desc="Spawn a command using prompt widget"),
-    Key([mod],            "q",      lazy.spawn("rofi -show drun"), desc="Launch Rofi"),
-    Key([mod],            "tab",    lazy.spawn("dmenu-menu.sh"),   desc="Launch launch dmenu with custom entries"),
-    Key([mod],            "y",      lazy.spawn("flameshot gui"),   desc="launch flameshot"),
-    Key([mod, "control"], "r",      lazy.reload_config(),          desc="Reload the config"),
+    # Launch:
+    Key([mod], "return", lazy.spawn(terminal)),          # terminal
+    Key([mod], "q",      lazy.spawn("rofi -show drun")), # app launcher
+    Key([mod], "y",      lazy.spawn("flameshot gui")),   # screenshot
+    Key([mod], "1",      lazy.spawn(browser)),           # Browser
+    Key([mod], "2",      lazy.spawn(file_manager)),      # File manager
+    Key([mod], "3",      lazy.spawn(music)),             # Music
 
-
-    # Window State
-    Key([mod], "g", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen on focused window"),
-    Key([mod], "t", lazy.window.toggle_floating(),   desc="Toggle floating on the focused window"),
-    Key([mod], "u", lazy.group.unminimize_all(),     desc="Unminimize all windows"),
+    # Commmands
+    Key([mod],            "w", lazy.window.kill()),   # Close window
+    Key([mod],            "r", lazy.spawncmd()),      # open prompt widget 
+    Key([mod, "control"], "r", lazy.reload_config()), # Reload the config
+    Key([mod], "t", lazy.window.toggle_floating()),   # Toggle floating
 
     # Media
-    Key([mod], "F12", lazy.spawn("playerctl play-pause"),     desc="toggle playback"),
-    Key([mod], "F11", lazy.spawn("playerctl next"),           desc="play next song"),
-    Key([mod], "F10", lazy.spawn("playerctl previous"),       desc="play last song"),
+    Key([mod], "F12", lazy.spawn("playerctl play-pause")), # Toggle playback
+    Key([mod], "F11", lazy.spawn("playerctl next")),       # Play next song"
+    Key([mod], "F10", lazy.spawn("playerctl previous")),   # Play last song
     
     # Volume
-    Key([mod], "F9",  lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="mute audio"),
-    Key([mod], "F8",  lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%"),  desc="increase audio"),
-    Key([mod], "F7",  lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1%"),  desc="lower audio"),
-
-    # Launch apps
-    Key([mod], "1",      lazy.spawn(browser), desc="launch browser"),
-    Key([mod], "2",      lazy.spawn(file_manager), desc="launch file manager"),
-    Key([mod], "3",      lazy.spawn(music), desc="launch music"),
-
-
-
+    Key([mod], # Mute
+        "F9",  
+        lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
+    Key([mod], # Increase
+        "F8", 
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%")),
+    Key([mod], # Decrease
+        "F7",  
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1%")),
 ]
 
 # Switch to tty
@@ -102,7 +99,8 @@ for vt in range(1, 8):
         Key(
             ["control", "mod1"],
             f"f{vt}",
-            lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
+            lazy.core.change_vt(vt).
+            when(func=lambda: qtile.core.name == "wayland"),
             desc=f"Switch to VT{vt}",
         )
     )
@@ -182,8 +180,8 @@ layouts = [
         border_width=2,
         grow_amount=1,  
         margin=5,
+        border_on_single=True,
     ),
-    layout.Max(),
 ]
 
 floating_layout = layout.Floating(
@@ -223,17 +221,13 @@ screens = [
                     disable_drag=True,
                     other_current_screen_border=colors["inactive"], 
                     other_screen_border=colors["inactive"],
-                    ),
+                ),
 
                 widget.Prompt(),
 
                 widget.Spacer(),
 
-                # widget.TextBox(" :"),
-
-                widget.Clock(
-                    format="%I:%M %S   %a, %m-%d"
-                    ),
+                widget.Clock(format="%I:%M %S   %a, %m-%d"),
 
                 widget.Spacer(),
 
@@ -244,15 +238,13 @@ screens = [
                 widget.Bluetooth(
                     default_show_battery=True,
                     device_format='{name}{battery_level}'
-                    ),
-
+                ),
             ],
             20,
             border_width=[2, 0, 0, 0],
             border_color=colors["foreground"],
             margin=[0, 0, 2, 0],
             background=colors["background"],
-
         ),
     ),
 ]
@@ -261,14 +253,6 @@ screens = [
 ###############################
 ###          HOOKS          ###
 ###############################
-
-# Round qtile bar
-#   @hook.subscribe.startup_complete
-#   def set_bar_property():
-#       for screen in qtile.screens:
-#           for bar in [screen.top, screen.bottom, screen.left, screen.right]:
-#               if bar and bar.window:
-#                   bar.window.set_property("QTILE_BAR", 1, "CARDINAL", 32)
 
 @hook.subscribe.startup_once
 def autostart():

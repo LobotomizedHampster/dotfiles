@@ -13,8 +13,7 @@ export MUSIC="zen-browser -P \"Music\""
 # file paths
 export STUFF_PATH="$HOME/my_stuff"
 export DOCUMENTS_PATH="$HOME/my_stuff/Documents"
-export ENCRYPTED="$DOCUMENTS_PATH/other/.st_logs-103985.7z"
-export DECRYPTED="$DOCUMENTS_PATH/other/.encrypted"
+export LOGS="$DOCUMENTS_PATH/.stlogs.archived.20260117-184304/64-55-82_cQfPxKyC/archived_logs-64-55-82_cQfPxKyC"
 export CONFIG_PATH="$HOME/.dotfiles"
 export DND_FILE="$DOCUMENTS_PATH/other/DO-NOT-DELETE.txt"
 

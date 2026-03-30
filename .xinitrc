@@ -7,7 +7,7 @@ xset s noexpose
 
 # screen locker 
 # xss-lock -- "$HOME/.local/bin/lock"
-picom --daemon # compiler
+picom --animation -b # compiler
 nitrogen --restore & # wallpaper manager
 conky & # background widgets
 

@@ -35,20 +35,16 @@ export GPG_TTY=$(tty)
 alias ra='ranger'
 alias vim='nvim'
 alias reg-vim='vim'
-alias zen="zen-browser"
+#alias zen="zen-browser"
 alias r="./.bi"
 alias x="startx"
 alias git-conf='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
-# apps
-
-# music
-mu() { nohup zen-browser -P "Music" > ~/my_other_stuff/browser.log 2>&1 & disown; exit; }
-
-# browser
-br() { nohup zen-browser -P "Default" > ~/my_other_stuff/browser.log 2>&1 & disown; exit; }
+# wrappers
 
 li() { ranger "$HOME/my_stuff/Documents" --cmd="set show_hidden false"; }
+
+j() { ranger "$LOGS"; }
 
 # bluetooth reset function
 bt-reset() {
