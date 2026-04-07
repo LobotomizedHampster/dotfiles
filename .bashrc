@@ -8,6 +8,7 @@ alias grep='grep --color=auto'
 # terminal prompt (looks like `(my_stuff)> ` when in $HOME/my_stuff)
 PS1="(\W)> "
 
+
 # see if ecrypted is decrypted
 source "$HOME/.local/bin/is-encrypted.sh"
 
@@ -35,10 +36,8 @@ export GPG_TTY=$(tty)
 alias ra='ranger'
 alias vim='nvim'
 alias reg-vim='vim'
-#alias zen="zen-browser"
 alias r="./.bi"
 alias x="startx"
-alias git-conf='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 # wrappers
 

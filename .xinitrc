@@ -7,10 +7,10 @@ xset s noexpose
 
 # screen locker 
 # xss-lock -- "$HOME/.local/bin/lock"
-picom --animation -b # compiler
+picom --animations -b # compiler
 nitrogen --restore & # wallpaper manager
 conky & # background widgets
 
 
-exec qtile start
-
+#exec qtile start
+exec dwm
