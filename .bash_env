@@ -15,7 +15,6 @@ export STUFF_PATH="$HOME/my_stuff"
 export DOCUMENTS_PATH="$HOME/my_stuff/Documents"
 export LOGS="$DOCUMENTS_PATH/.stlogs.archived.20260117-184304/64-55-82_cQfPxKyC/archived_logs-64-55-82_cQfPxKyC"
 export CONFIG_PATH="$HOME/.dotfiles"
-export DND_FILE="$DOCUMENTS_PATH/other/DO-NOT-DELETE.txt"
 
 # colorscheme (rrggbb)
 export OPACITY="65"
