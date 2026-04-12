@@ -162,10 +162,10 @@ for i in groups[-unique_groups:]:
 ###############################
 
 colors = {
-    "foreground": "#FFFFFF",
-    "background": "#00000088",
-    "inactive": "#666666", 
-    "accent": "#FFFFFF",
+    "foreground": "#ebdbc2",
+    "background": "#161414",
+    "inactive": "#a89984", 
+    "accent": "#74971a", # green
 }
 
 
@@ -179,7 +179,7 @@ layouts = [
         border_normal=colors["inactive"],
         border_width=2,
         grow_amount=1,  
-        margin=5,
+        margin=2,
         border_on_single=True,
     ),
 ]
@@ -196,7 +196,7 @@ floating_layout = layout.Floating(
 ###############################
 
 widget_defaults = dict(
-    font="CaskaydiaMono Nerd Font",
+    font="Hermit",
     fontsize=13,
     padding=3,
 )

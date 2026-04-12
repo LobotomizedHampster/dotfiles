@@ -4,7 +4,7 @@ vim.o.linebreak = true -- continue lines at next space
 local default_colorcolumn = "81"
 vim.opt.colorcolumn = default_colorcolumn -- set a color column
 vim.o.number = true -- add line numbers
-vim.opt.clipboard = "unnamedplus" -- clipboard is the same as nvim buffer
+-- vim.opt.clipboard = "unnamedplus" -- clipboard is the same as nvim buffer
 
 -- set tab width
 vim.opt.tabstop = 4

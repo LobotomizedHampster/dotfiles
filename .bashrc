@@ -6,7 +6,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 # terminal prompt (looks like `(my_stuff)> ` when in $HOME/my_stuff)
-PS1="(\W)> "
+PS1="[\W]> "
 
 
 # see if ecrypted is decrypted
@@ -41,9 +41,11 @@ alias x="startx"
 
 # wrappers
 
-li() { ranger "$HOME/my_stuff/Documents" --cmd="set show_hidden false"; }
+li() { "$FILE_MGR" "$HOME/my_stuff/Documents" --cmd="set show_hidden false"; }
 
-j() { ranger "$LOGS"; }
+j() { "$FILE_MGR" "$LOGS"; }
+
+rtn() { "$EDITOR" "$DOCUMENTS_PATH/routine"; }
 
 # bluetooth reset function
 bt-reset() {

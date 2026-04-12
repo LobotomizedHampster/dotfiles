@@ -2,46 +2,53 @@
 
 source "$HOME/.bash_env"
 
+
+CONFIG_OPTIONS_FILE="$HOME/.config/config_files.conf"
+
 CHOICE="$1"
 
-# print options
-printf "Choose an option: \n
-01.) qtile
-02.) picom
-03.) kitty
-04.) ranger
-05.) rofi
-06.) nvim
-07.) dunst
-08.) conky
-09.) browser
-10.) bashrc
-11.) xinitrc
-12.) xprofile
-13.) .local/bin
-14.) dmenu
+# get the columns in $CONFIG_OPTIONS_FILE and turn them into arrays
+get-array() {
+    VAR_NAME=$2
+    str=$(awk -v col=$1 '{print $col}' $CONFIG_OPTIONS_FILE)
+    readarray -t $VAR_NAME <<< "$str"
+}
 
-"
+get-array 1 "CONFIG_NAME"
 
-# get input if no arg supplied
-read -rp "enter a value: " CHOICE
+printf "Pick an option: \n"
+for name in "${!CONFIG_NAME[@]}"; do
+    ((number = name + 1)) # increment the index to start at 1
+    # check to see if less than ten, if it is, pad with a zero
+    if [[ $number -lt 10 ]]; then 
+        number="0$number"
+    fi
 
-CONFIG_PATH="$HOME/.dotfiles" # path for config files
+    printf "$number.) ${CONFIG_NAME[name]}\n"
+done
 
-# define reach number in the options
-case "$CHOICE" in
-    "1"|"01") "$FILE_MGR" "$CONFIG_PATH/.config/qtile/" ;;
-    "2"|"02") "$FILE_MGR" "$CONFIG_PATH/.config/picom/" ;;
-    "3"|"03") "$FILE_MGR" "$CONFIG_PATH/.config/kitty/" ;;
-    "4"|"04") "$FILE_MGR" "$CONFIG_PATH/.config/ranger/" ;;
-    "5"|"05") "$FILE_MGR" "$CONFIG_PATH/.config/rofi/" ;;
-    "6"|"06") "$FILE_MGR" "$CONFIG_PATH/.config/nvim/" ;;
-    "7"|"07") "$FILE_MGR" "$CONFIG_PATH/.config/dunst/" ;;
-    "8"|"08") "$FILE_MGR" "$CONFIG_PATH/.config/conky/" ;;
-    "9"|"09") "$FILE_MGR" "$CONFIG_PATH/.zen/" ;;
-    "10"|"10") "$EDITOR" "$CONFIG_PATH/.bashrc" ;;
-    "11"|"11") "$EDITOR" "$CONFIG_PATH/.xinitrc" ;;
-    "12"|"12") "$EDITOR" "$CONFIG_PATH/.xprofile" ;;
-    "13"|"13") "$FILE_MGR" "$CONFIG_PATH/.local/bin/" ;;
-    "14"|"14") "$FILE_MGR" "$CONFIG_PATH/compiled/dmenu/" ;;
-esac
+# check if the argument has been provided
+if [[ $# -eq 0 ]]; then
+    read -rp "enter a value: " CHOICE
+fi
+
+for name in "${!CONFIG_NAME[@]}"; do
+    if [[ "$CHOICE" = "${CONFIG_NAME[name]}" ]]; then
+        CHOICE=$((name + 1))
+    fi
+done
+
+echo $CHOICE
+
+FILE_FOLDER=$(awk -v row=$CHOICE 'NR==row {print $2}' $CONFIG_OPTIONS_FILE)
+printf "$FILE_FOLDER"
+
+FILE_PATH=$(awk -v row=$CHOICE 'NR==row {print $3}' $CONFIG_OPTIONS_FILE)
+
+FULL_PATH="${CONFIG_PATH}/${FILE_PATH}"
+
+if [[ $FILE_FOLDER = "file" ]]; then
+    "$EDITOR" "$FULL_PATH"
+elif [[ $FILE_FOLDER = "folder" ]]; then
+    "$FILE_MGR" "$FULL_PATH"
+fi
