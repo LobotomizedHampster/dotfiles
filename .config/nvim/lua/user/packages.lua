@@ -108,6 +108,17 @@ local plugins = {
           { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       }
   },
+
+  { -- markdown previews
+      'MeanderingProgrammer/render-markdown.nvim',
+      dependencies = { 'nvim-treesitter/nvim-treesitter', 
+                       'nvim-mini/mini.icons' }, 
+      ---@module 'render-markdown'
+      ---@type render.md.UserConfig
+      opts = {
+      enabled = true,
+      },
+  }
   
 
 }

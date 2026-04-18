@@ -1,0 +1,20 @@
+# DUTTSY IGNORE #
+
+# ## DUTTSY ##
+
+# this file
+.duttsy-ignore
+
+# overwritten files
+.overwritten/
+
+
+# ## GIT ##
+
+# git README document
+README.md
+# git version folder
+.git/
+# git ignore
+.gitignore
+

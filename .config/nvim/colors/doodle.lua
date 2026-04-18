@@ -25,7 +25,7 @@ local c = {
 
 -- UI
 set(0, "Normal",       { fg = c.fg, bg = c.bg })
-set(0, "LineNr",       { fg = c.muted, italic = true })
+set(0, "LineNr",       { fg = c.muted, bold = true })
 set(0, "Visual",       { bg = c.hl })
 set(0, "StatusLine",   { fg = c.bg, bg = c.fg })
 set(0, "VertSplit",    { fg = c.fg })
@@ -56,15 +56,8 @@ set(0, "Special",      { fg = c.cyan, bold = true })
 -- DRAFT SYNTAX
 set(0, "DraftChapter",    { fg = c.purple, bold = true })
 set(0, "DraftBold",       { bold = true })
-set(0, "DraftItalic",    { italic = true })
-set(0, "DraftBoldItalic",    { italic = true, bold = true })
+set(0, "DraftItalic",     { italic = true })
+set(0, "DraftBoldItalic", { italic = true, bold = true })
 set(0, "DraftEditInsert", { fg = c.green })
 set(0, "DraftEditRemove", { fg = c.red })
-set(0, "DraftTodo", { fg = c.yellow, bold = true })
-
-
-
-
-
-
-
+set(0, "DraftTodo",       { fg = c.yellow, bold = true })
