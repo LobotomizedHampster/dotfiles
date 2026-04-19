@@ -6,9 +6,9 @@ export VISUAL=nvim
 export EDITOR=nvim
 export FILE_MGR=ranger
 export FILE_MGR_FULL="kitty -e ranger"
-export FONT="CaskaydiaMono NF"
-export BROWSER="zen-browser -P \"Default\""
-export MUSIC="zen-browser -P \"Music\""
+export FONT="Hermit"
+export BROWSER="firefox"
+export MUSIC="firefox"
 
 # file paths
 export STUFF_PATH="$HOME/my_stuff"
