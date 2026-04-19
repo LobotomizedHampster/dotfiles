@@ -70,8 +70,7 @@ local plugins = {
             "vim", 
             "vimdoc", 
             "bash", 
-            "markdown",
-            "diff"}
+            "markdown"}
   
         for _, parser in ipairs(parsers) do
           pcall(ts.install, parser)

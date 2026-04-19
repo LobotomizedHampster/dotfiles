@@ -5,7 +5,7 @@ vim.g.colors_name = "doodle"
 
 local set = vim.api.nvim_set_hl
 
--- PALETTE 
+-- PALETTE
 local c = {
   bg       = "#161414",
   fg       = "#ebdbc2",
