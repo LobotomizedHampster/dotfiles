@@ -17,12 +17,12 @@ static const char col_black[]       = "#161414";
 static const char col_muted[]       = "#a89984";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_white },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_black  },
+	[SchemeNorm] = { col_gray3, col_gray1, col_muted },
+	[SchemeSel]  = { col_gray4, col_cyan,  col_white  },
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "z", "a", "x", "s", "d", "c", "f" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -96,8 +96,8 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_5,                      4)
 	TAGKEYS(                        XK_6,                      5)
 	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
+	/*TAGKEYS(                        XK_8,                      7)
+	TAGKEYS(                        XK_9,                      8)*/
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
