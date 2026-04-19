@@ -17,8 +17,8 @@ static const char col_black[]       = "#161414";
 static const char col_muted[]       = "#a89984";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_muted },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_white  },
+	[SchemeNorm] = { col_white, col_black, col_muted },
+	[SchemeSel]  = { col_black, col_white, col_white  },
 };
 
 /* tagging */
@@ -38,7 +38,7 @@ static const Rule rules[] = {
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
-static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
 
 static const Layout layouts[] = {
@@ -79,7 +79,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_w,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	/*{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },*/
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
