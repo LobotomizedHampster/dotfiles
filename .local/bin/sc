@@ -1,0 +1,20 @@
+#!/bin/bash
+
+	#wget "$2" -nc -O $STUFF_PATH/Downloads/wallpapers/"$filename"
+	#nitrogen --set-zoom-fill --save $full_fn
+IMAGE_PATH="$HOME/.local/share/wallpaper/current.png"
+
+# look for argument, 
+# if none, set to last created wallpaper
+if [[ $# -eq 0 ]]; then
+    nitrogen --set-zoom-fill --save "$IMAGE_PATH"
+
+# if there is one, use it to set the color of the wallpaper
+elif [[ $# -eq 1 ]]; then
+    IMAGE_COLOR="$1"
+    rm "$IMAGE_PATH"
+    magick -size 1x1 xc:"#${IMAGE_COLOR}" "$IMAGE_PATH"
+fi
+
+
+

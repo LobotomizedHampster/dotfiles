@@ -1,0 +1,79 @@
+#!/bin/bash
+
+ARG_1="$1"
+ARG_2="$2"
+
+BRIGHTNESS_LOW=25
+BRIGHTNESS_MEDIUM=50
+BRIGHTNESS_HIGH=65
+
+preset() {
+    LEVEL="$1"
+
+    ddcutil --display 1 setvcp 10 $LEVEL --noverify
+    ddcutil --display 2 setvcp 10 $LEVEL --noverify
+    ddcutil --display 1 setvcp 12 $LEVEL --noverify
+    ddcutil --display 2 setvcp 12 $LEVEL --noverify
+}
+
+change_brightness() {
+    POS_OR_NEG="$1"
+    VALUE="$2"
+
+    ddcutil --display 1 setvcp 10 $POS_OR_NEG $VALUE --noverify
+    ddcutil --display 2 setvcp 10 $POS_OR_NEG $VALUE --noverify
+    ddcutil --display 1 setvcp 12 $POS_OR_NEG $VALUE --noverify
+    ddcutil --display 2 setvcp 12 $POS_OR_NEG $VALUE --noverify
+}
+
+HELP_TXT="this is the help menu, options below:
+
+-h  --help    print this menu
+
+-pl --low     set the brightness to low ($BRIGHTNESS_LOW)
+-pm --medium  set the brightness to medium ($BRIGHTNESS_MEDIUM)
+-ph --high    set the brightness to high ($BRIGHTNESS_HIGH)
+
+-s --static   set a static value (eg not a preset, or a increase or decrease)
+
+[+]{number}   increase the brightness by number 
+-{number}     decrease the brightness by number
+
+
+everything else i would do with the monitor controls manually
+"
+
+shopt -s extglob # enable advanced globbing in case statements
+
+case "$ARG_1" in
+
+    "-h"|"--help")
+        echo "$HELP_TXT"
+        ;;
+
+
+    "-pl"|"--low")
+        preset $BRIGHTNESS_LOW
+        ;;
+    "-pm"|"--medium")
+        preset $BRIGHTNESS_MEDIUM
+        ;;
+    "-ph"|"--high")
+        preset $BRIGHTNESS_HIGH
+        ;;
+
+
+    "-s"|"--static")
+        preset $ARG_2
+        ;;
+
+
+    +([+0-9]))
+        raw_num="${ARG_1//+/}"
+        change_brightness "+" $raw_num
+        ;;
+    -+([0-9]))
+        raw_num="${ARG_1//-/}"
+        change_brightness "-" $raw_num
+        ;;
+esac

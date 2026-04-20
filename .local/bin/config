@@ -1,0 +1,54 @@
+#!/bin/bash
+
+source "$HOME/.bash_env"
+
+
+CONFIG_OPTIONS_FILE="$HOME/.config/config_files.conf"
+
+CHOICE="$1"
+
+# get the columns in $CONFIG_OPTIONS_FILE and turn them into arrays
+get-array() {
+    VAR_NAME=$2
+    str=$(awk -v col=$1 '{print $col}' $CONFIG_OPTIONS_FILE)
+    readarray -t $VAR_NAME <<< "$str"
+}
+
+get-array 1 "CONFIG_NAME"
+
+printf "Pick an option: \n"
+for name in "${!CONFIG_NAME[@]}"; do
+    ((number = name + 1)) # increment the index to start at 1
+    # check to see if less than ten, if it is, pad with a zero
+    if [[ $number -lt 10 ]]; then 
+        number="0$number"
+    fi
+
+    printf "$number.) ${CONFIG_NAME[name]}\n"
+done
+
+# check if the argument has been provided
+if [[ $# -eq 0 ]]; then
+    read -rp "enter a value: " CHOICE
+fi
+
+for name in "${!CONFIG_NAME[@]}"; do
+    if [[ "$CHOICE" = "${CONFIG_NAME[name]}" ]]; then
+        CHOICE=$((name + 1))
+    fi
+done
+
+echo $CHOICE
+
+FILE_FOLDER=$(awk -v row=$CHOICE 'NR==row {print $2}' $CONFIG_OPTIONS_FILE)
+printf "$FILE_FOLDER"
+
+FILE_PATH=$(awk -v row=$CHOICE 'NR==row {print $3}' $CONFIG_OPTIONS_FILE)
+
+FULL_PATH="${CONFIG_PATH}/${FILE_PATH}"
+
+if [[ $FILE_FOLDER = "file" ]]; then
+    "$EDITOR" "$FULL_PATH"
+elif [[ $FILE_FOLDER = "folder" ]]; then
+    "$FILE_MGR" "$FULL_PATH"
+fi

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+target="2026-06-19"   # YYYY-MM-DD format
+
+today=$(date +%s)
+target_date=$(date -d "$target" +%s)
+
+diff_seconds=$((target_date - today))
+diff_days=$((diff_seconds / 86400))
+
+echo "$diff_days days remaining until the episode!! (fri, $target)"

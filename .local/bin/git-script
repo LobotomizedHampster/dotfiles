@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# TODO:
+# [ ] git log --oneline
+# [ ] color support
+# [ ] worktree adding
+# [ ] commit support
+# [ ] adding support
+# [ ] reverting support
+
+
+printf "Choose an option:
+- [A]dd files to snapshot
+- [C]ommit changes
+- [R]evert a change
+- [L]og current commits
+- [E]xit
+
+"
+invalid_option() {
+    echo "Invalid option. Try again."
+}
+
+option_add() {
+    printf "Selected add. \nAdd all files? [Y/n]:\n\n"
+    while true; do
+        
+        read -rp "> " ADD_OPTION
+
+        case "$ADD_OPTION" in
+            y | Y | yes | Yes | YES )
+                echo "Ok, adding all files."
+                git add .
+                break
+                ;;
+            n | N | no | No | NO )
+                break
+                ;;
+            *)
+                invalid_option
+            ;;
+        esac
+    done
+} 
+
+
+
+
+while true; do
+
+read -rp "> " MAIN_OPTION
+
+	case "$MAIN_OPTION" in
+	    a | A | add | Add )
+            option_add
+            break
+	        ;;
+	    c | C | commit | Commit )
+	        echo "selected commit"
+            break
+	        ;;
+	    r | R | revert | Revert )
+	        echo "selected r"
+            break
+	        ;;
+	    l | L | log | Log )
+	        echo "selected l"
+            break
+	        ;;
+	    e | E | exit | Exit )
+	        echo "Exiting..."
+	        exit 0
+            break
+	        ;;
+	    *)
+            echo "Invalid input. Try again."
+	
+	esac
+done

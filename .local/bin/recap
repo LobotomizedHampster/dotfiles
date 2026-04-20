@@ -1,0 +1,53 @@
+#!/bin/bash
+source "$HOME/.bash_env"
+
+
+# asks for a specific goal, then returns either "#" or "-" for yes or no
+promptCheck() {
+	local PROMPT="$1"
+
+	while true; do
+		read -r -p "$PROMPT" PROMPT_VAR
+
+		case "$PROMPT_VAR" in
+			y|Y|yes|YES)
+				echo "# "
+		        	break
+		        	;;
+		    	n|N|no|NO)
+				echo "- "
+		        	break
+		        	;;
+		    	*)
+		        	;;
+			esac
+	done
+}
+
+# create a bunch of vars from the function defined above
+WAKE_UP=$(promptCheck "Did you wake up on time?: ")
+WORK_OUT=$(promptCheck "Did you work out?: ")
+TEETH=$(promptCheck "Did you brush your teeth?: ")
+GOALS=$(promptCheck "Did you work on your goals?: ")
+STRETCH=$(promptCheck "Did you stretch?: ")
+EAT=$(promptCheck "Did you eat well?: ")
+TV=$(promptCheck "Did you avoid TV?: ")
+KHAN=$(promptCheck "Did you work on Khan?: ")
+
+DATE=$(date +%m-%d-%y)
+
+
+
+
+# append the text to the end of the file 
+printf "%s | %s%s%s%s%s%s%s%s\n" "$DATE" \
+	"$WAKE_UP" "$WORK_OUT" "$TEETH" \
+	"$GOALS" "$STRETCH" "$EAT" "$TV" "$KHAN"\
+	>> "$DOCUMENTS_PATH/recap"
+
+# print the new file 
+printf "\n\n"
+
+
+# show the modified file in the terminal
+cat "$DOCUMENTS_PATH/recap"
