@@ -52,6 +52,9 @@ set(0, "PreProc",      { fg = c.pink })
 set(0, "ColorColumn",  { fg = c.muted, bg = c.hl })
 set(0, "Special",      { fg = c.cyan, bold = true })
 
+-- DIFF DYNTAX
+
+set(0, "Added",      { fg = c.green })
 
 -- DRAFT SYNTAX
 set(0, "DraftChapter",    { fg = c.purple, bold = true })
