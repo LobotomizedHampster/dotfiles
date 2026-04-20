@@ -41,10 +41,10 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
 
-#include "gaplessgrid.c"
+#include "doublecolumn.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "###",      gaplessgrid },    /* first entry is default */
+	{ "I|I",      doublecolumn },    /* first entry is default */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
