@@ -35,6 +35,7 @@ export GPG_TTY=$(tty)
 # App aliases
 alias ra='ranger'
 alias vim='nvim'
+alias nivm='nvim' # i keep fucking doing this
 alias reg-vim='vim'
 alias r="./.bi"
 alias x="startx"
