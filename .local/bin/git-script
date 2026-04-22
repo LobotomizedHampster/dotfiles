@@ -4,9 +4,10 @@
 # [ ] git log --oneline
 # [ ] color support
 # [ ] worktree adding
-# [ ] commit support
-# [ ] adding support
+# [/] commit support
+# [/] adding support
 # [ ] reverting support
+# [ ] --pretty:format log
 
 
 printf "Choose an option:
@@ -29,11 +30,15 @@ option_add() {
 
         case "$ADD_OPTION" in
             y | Y | yes | Yes | YES )
-                echo "Ok, adding all files."
+                echo "Selected yes, adding all files."
                 git add .
                 break
                 ;;
             n | N | no | No | NO )
+                printf "Selected no, which files do you want to add then?\n\n"
+                read -rp "> " ADD_FILES_OPTION
+                echo "Ok, adding: $ADD_FILES_OPTION"
+                git add $ADD_FILES_OPTION
                 break
                 ;;
             *)
@@ -42,6 +47,29 @@ option_add() {
         esac
     done
 } 
+
+option_commit() {
+    printf "Selected commit. \nCommit message?\n\n"
+
+    while true; do 
+
+        read -rp "> " COMMIT_OPTION
+
+        # if the string is empty (or contains only a space)
+        if [[ -z "$COMMIT_OPTION" || "$COMMIT_OPTION" == " " ]]; then
+            invalid_input
+        else
+            git commit -m "$COMMIT_OPTION"
+            break
+        fi
+    done
+}
+
+option_log() {
+    printf "Selected log. Showing Commit logs:\n\n"
+    git log --max-count=18 \
+        --pretty=format: "%C(yellow)%h  %C(green)%>|(21)%cr  %C(reset)%s"
+}
 
 
 
@@ -56,7 +84,7 @@ read -rp "> " MAIN_OPTION
             break
 	        ;;
 	    c | C | commit | Commit )
-	        echo "selected commit"
+            option_commit
             break
 	        ;;
 	    r | R | revert | Revert )
@@ -64,7 +92,7 @@ read -rp "> " MAIN_OPTION
             break
 	        ;;
 	    l | L | log | Log )
-	        echo "selected l"
+	        option_log
             break
 	        ;;
 	    e | E | exit | Exit )
@@ -73,7 +101,7 @@ read -rp "> " MAIN_OPTION
             break
 	        ;;
 	    *)
-            echo "Invalid input. Try again."
+            invalid_input
 	
 	esac
 done
