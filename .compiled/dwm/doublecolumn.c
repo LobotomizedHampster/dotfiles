@@ -1,5 +1,5 @@
 void
-gaplessgrid(Monitor *m) {
+doublecolumn(Monitor *m) {
 	unsigned int n, col, lrow, rrow, cn, rn, /*i,*/ row, cx, cy, cw, ch, i, cyn, tyl, tyr;
     float rfacts = 0;
     float lfacts = 0;
