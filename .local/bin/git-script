@@ -29,7 +29,7 @@ option_add() {
         read -rp "> " ADD_OPTION
 
         case "$ADD_OPTION" in
-            y | Y | yes | Yes | YES )
+            y | Y | yes | Yes | YES | "")
                 echo "Selected yes, adding all files."
                 git add .
                 break
