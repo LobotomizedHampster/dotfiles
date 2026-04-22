@@ -1,4 +1,5 @@
-/* See LICENSE file for copyright and license details. */
+/* TODO:
+ * [ ] add media/volume widgets
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -45,9 +46,8 @@ static const int refreshrate = 60;  /* refresh rate (per second) for client move
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "I|I",      doublecolumn },    /* first entry is default */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "[]=",      tile },   
+	{ " * ",      NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
@@ -67,6 +67,44 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browsercmd[]  = { "firefox", NULL };
 
+/* HOTKEYS TODO:
+ *
+ * commands:
+ * [ ] close window (mod + w)
+ * [ ] quit (mod + shift + q)
+ * [ ] toggle floating window (mod + t)
+ *
+ * apps:
+ * [ ] launch app (mod + [1-3])
+ * [ ] launch terminal (mod + return)
+ * [ ] launch launcher (mod + q)
+ * [ ] launch screenshot util (mod + y)
+ *
+ * focus window:
+ * [ ] focus [next/previous] window (mod + [jk])
+ * [ ] foucs [first/last] window (mod + [hl])
+ *
+ * move window:
+ * [ ] move window [up/down] in stack (mod + [jk])
+ * [ ] move window to [left/right] stack (mod + shift + [hl])
+ *
+ * grow window:
+ * [ ] grow window [up/down] (mod + ctrl + [jk])
+ * [ ] grow columns [left/right] (mod + ctrl + [hl])
+ * 
+ * tags:
+ * [ ] move view to [tag] (mod + [zaxsdcf])
+ * [ ] move window to [tag] (mod + shift + [zaxsdcf])
+ *
+ * monitors:
+ * [ ] focus other monitor (mod + tab)
+ *
+ * may add:
+ * [ ] media keys?
+ * [ ] volume keys?
+ * [ ] toggle bar? (mod + b)
+*/
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_1,      spawn,          {.v = browsercmd } },
@@ -79,7 +117,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
+	/*{ MODKEY,                       XK_Return, zoom,           {0} },*/
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_w,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -104,8 +142,6 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_d,                      4)
 	TAGKEYS(                        XK_c,                      5)
 	TAGKEYS(                        XK_f,                      6)
-	/*TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)*/
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
@@ -115,7 +151,7 @@ static const Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+	/*{ ClkWinTitle,          0,              Button2,        zoom,           {0} },*/
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },

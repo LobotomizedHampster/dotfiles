@@ -39,6 +39,7 @@ alias nivm='nvim' # i keep fucking doing this
 alias reg-vim='vim'
 alias r="./.bi"
 alias x="startx"
+alias g="$HOME/.local/bin/git-script"
 
 # wrappers
 
