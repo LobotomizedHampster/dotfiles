@@ -68,7 +68,7 @@ option_commit() {
 option_log() {
     printf "Selected log. Showing Commit logs:\n\n"
     git log --max-count=18 \
-        --pretty=format: "%C(yellow)%h  %C(green)%>|(21)%cr  %C(reset)%s"
+        --pretty=format:"%C(yellow)%h  %C(green)%>|(21)%cr  %C(reset)%s"
 }
 
 
@@ -76,7 +76,11 @@ option_log() {
 
 while true; do
 
-read -rp "> " MAIN_OPTION
+if [[ -z "$1" ]]; then
+    read -rp "> " MAIN_OPTION
+else
+    MAIN_OPTION="$1"
+fi
 
 	case "$MAIN_OPTION" in
 	    a | A | add | Add )
@@ -101,7 +105,8 @@ read -rp "> " MAIN_OPTION
             break
 	        ;;
 	    *)
-            invalid_input
+            invalid_option
+            exit 0
 	
 	esac
 done
