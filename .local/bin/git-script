@@ -1,23 +1,14 @@
 #!/bin/bash
 
 # TODO:
-# [ ] git log --oneline
-# [ ] color support
-# [ ] worktree adding
-# [/] commit support
-# [/] adding support
-# [ ] reverting support
-# [ ] --pretty:format log
+# [ ] push
 
 
-printf "Choose an option:
-- [A]dd files to snapshot
-- [C]ommit changes
-- [R]evert a change
-- [L]og current commits
-- [E]xit
+if [[ ! -d ".git" ]]; then
+    NOT_INIT=true
 
-"
+
+
 invalid_option() {
     echo "Invalid option. Try again."
 }
@@ -72,6 +63,19 @@ option_log() {
 }
 
 
+printf "Choose an option:
+- [A]dd files to snapshot
+- [C]ommit changes
+- [R]evert a change
+- [L]og current commits"
+if [[ ! -d ".git" ]]; then
+printf "
+- [I]nitialize a git repo"
+fi
+printf "
+- [E]xit
+
+"
 
 
 while true; do
@@ -95,6 +99,8 @@ read -rp "> " MAIN_OPTION
 	        option_log
             break
 	        ;;
+        i | I | init | Init )
+            if [[
 	    e | E | exit | Exit )
 	        echo "Exiting..."
 	        exit 0

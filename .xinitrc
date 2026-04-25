@@ -12,5 +12,5 @@ nitrogen --restore & # wallpaper manager
 conky & # background widgets
 
 
-#exec qtile start
-exec dwm
+exec qtile start
+#exec dwm
