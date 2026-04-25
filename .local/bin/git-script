@@ -3,13 +3,32 @@
 # TODO:
 # [ ] push
 
+INITIALIZED=false
+ALL_ADDED=false
+ALL_COMMITTED=false
+REMOTE_UPDATED=false
 
-if [[ ! -d ".git" ]]; then
-    NOT_INIT=true
+
+if [[ -d ".git" ]]; then
+    INITIALIZED=true
+
+    #git fetch --quiet # gets changes from remote
+    # name of remote
+    #UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
+
+    if [[ -z "$(git diff --cached --quiet)" ]]; then
+        ALL_ADDED=true
+    elif [[ -z "$(git status --porcelain)" ]]; then
+        ALL_COMMITTED=true
+    elif [[ "$(git rev-list --count HEAD..$UPSTREAM)" -eq 0 ]]; then
+        REMOTE_UPDATED=true
+    fi
+fi
+
+#echo "$INITIALIZED"
 
 
-
-invalid_option() {
+option_invalid() {
     echo "Invalid option. Try again."
 }
 
@@ -33,7 +52,7 @@ option_add() {
                 break
                 ;;
             *)
-                invalid_option
+                option_invalid
             ;;
         esac
     done
@@ -63,19 +82,24 @@ option_log() {
 }
 
 
-printf "Choose an option:
-- [A]dd files to snapshot
-- [C]ommit changes
-- [R]evert a change
-- [L]og current commits"
-if [[ ! -d ".git" ]]; then
-printf "
-- [I]nitialize a git repo"
+if [[ $INITIALIZED == false ]]; then
+    printf "%s\n" \
+           "Choose an option:" \
+            "- [I]nitalize a git repo" \
+            "- [E]xit"
+else
+    printf "Choose an option:\n"
+    if [[ $ALL_ADDED == false ]]; then
+    printf -- "- [A]dd files to snapshot\n" # "--" is to treat string as data
+    elif [[ $ALL_COMMITTED == false ]]; then
+    printf -- "- [C]ommit changes\n"
+    elif [[ $REMOTE_UPDATED == false ]]; then
+    printf -- "- [P]ush to remote\n"
+    fi
+    printf "%s\n" \
+           "- [R]evert a change" \
+           "- [L]og current commits"
 fi
-printf "
-- [E]xit
-
-"
 
 
 while true; do
@@ -100,7 +124,9 @@ read -rp "> " MAIN_OPTION
             break
 	        ;;
         i | I | init | Init )
-            if [[
+            echo " "
+            break
+            ;;
 	    e | E | exit | Exit )
 	        echo "Exiting..."
 	        exit 0
