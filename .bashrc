@@ -5,7 +5,15 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-# terminal prompt (looks like `(my_stuff)> ` when in $HOME/my_stuff)
+# random quote
+quote=$(curl -s https://zenquotes.io/api/random | \
+        jq -r '.[0] | "\(.q)\n    - \(.a)"')
+# checks to see if the limit has been reached
+if [[ ! "${quote,,}" == *"obtain an auth key"* ]]; then 
+    printf "$quote\n"
+fi
+
+# terminal prompt (looks like `[my_stuff]> ` when in $HOME/my_stuff/)
 PS1="[\W]> "
 
 

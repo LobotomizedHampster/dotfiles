@@ -20,8 +20,14 @@ if [[ -d ".git" ]]; then
         ALL_ADDED=true
     elif [[ -z "$(git status --porcelain)" ]]; then
         ALL_COMMITTED=true
-    elif [[ "$(git rev-list --count HEAD..$UPSTREAM)" -eq 0 ]]; then
+    elif git diff --quiet HEAD @{u}; then
         REMOTE_UPDATED=true
+    elif ! git diff --quiet HEAD @{u}; then
+        status=$?
+        if [[ ! "$status" -eq 1 ]]; then
+            printf "%s" "An error occured when" \
+                "fetching branch (likely does not exist)"
+        fi
     fi
 fi
 
@@ -30,6 +36,11 @@ fi
 
 option_invalid() {
     echo "Invalid option. Try again."
+}
+
+option_init() {
+    printf "Selected initialize. \nInitializing repo..."
+    git init
 }
 
 option_add() {
@@ -107,6 +118,10 @@ while true; do
 read -rp "> " MAIN_OPTION
 
 	case "$MAIN_OPTION" in
+        i | I | init | Init )
+            option_init
+            break
+            ;;
 	    a | A | add | Add )
             option_add
             break
@@ -123,10 +138,6 @@ read -rp "> " MAIN_OPTION
 	        option_log
             break
 	        ;;
-        i | I | init | Init )
-            echo " "
-            break
-            ;;
 	    e | E | exit | Exit )
 	        echo "Exiting..."
 	        exit 0
