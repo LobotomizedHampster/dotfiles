@@ -1,6 +1,6 @@
 void
 doublecolumn(Monitor *m) {
-	unsigned int n, col, lrow, rrow, cn, rn, /*i,*/ row, cx, cy, cw, ch, i, cyn, tyl, tyr;
+	unsigned int n, col, row, lrow, rrow, cn, lw, rw, rn, /*i,*/ cx, cy, cw, ch, i, cyn, tyl, tyr;
     float rfacts = 0;
     float lfacts = 0;
 	Client *c;
@@ -46,26 +46,26 @@ doublecolumn(Monitor *m) {
         }
     }
 
-	cw = m->ww / col; /* column width */
-
 
 	cn = 0; /* current column number */
 	rn = 0; /* current row number */
     tyl = 0; /* y pos for window placment */
     tyr = 0; 
+    rw = (col - 1) ? m->ww * (1 - m->mfact) : m->ww;
+    lw = (col - 1) ? m->ww * m->mfact : m->ww;
 	for(c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
         /* determine which column the window is in */
-        if(cn) {
+        if(cn) { /* right column */
             row = rrow;
-            cx = m->wx + cw; /* window col pos */
+            cw = rw;
+            cx = m->wx + lw; /* window col pos */
             ch = m->wh * (c->cfact / rfacts);
-            /*rfacts -= c->cfact;*/
             cy = tyr;
-        } else {
+        } else { /* left column */
             row = lrow;
+            cw = lw;
             cx = m->wx; /* window col pos */
             ch = m->wh * (c->cfact / lfacts);
-            /*lfacts -= c->cfact;*/
             cy = tyl;
         }
 
