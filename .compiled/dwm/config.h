@@ -70,34 +70,37 @@ static const char *browsercmd[]  = { "firefox", NULL };
 /* HOTKEYS TODO:
  *
  * commands:
- * [ ] close window (mod + w)
- * [ ] quit (mod + shift + q)
- * [ ] toggle floating window (mod + t)
+ * [/] close window (mod + w)
+ * [/] quit (mod + shift + q)
+ * [/] toggle floating window (mod + t)
  *
  * apps:
  * [ ] launch app (mod + [1-3])
- * [ ] launch terminal (mod + return)
- * [ ] launch launcher (mod + q)
+ * [/] launch terminal (mod + return)
+ * [/] launch launcher (mod + q)
  * [ ] launch screenshot util (mod + y)
  *
  * focus window:
- * [ ] focus [next/previous] window (mod + [jk])
- * [ ] foucs [first/last] window (mod + [hl])
+ * [/] focus [next/previous] window (mod + [jk])
+ * [/] foucs [first/last] window (mod + [hl])
  *
  * move window:
  * [ ] move window [up/down] in stack (mod + [jk])
  * [ ] move window to [left/right] stack (mod + shift + [hl])
  *
  * grow window:
- * [ ] grow window [up/down] (mod + ctrl + [jk])
- * [ ] grow columns [left/right] (mod + ctrl + [hl])
+ * [/] grow window [up/down] (mod + ctrl + [jk])
+ * [/] grow columns [left/right] (mod + ctrl + [hl])
  * 
  * tags:
  * [ ] move view to [tag] (mod + [zaxsdcf])
+ * [ ] toggle view to [tag] (mod + 
  * [ ] move window to [tag] (mod + shift + [zaxsdcf])
+ * [ ] view all tags (mod + \)
  *
  * monitors:
  * [ ] focus other monitor (mod + tab)
+ * [ ] move window to other monitor (mod + shift + tab)
  *
  * may add:
  * [ ] media keys?
@@ -105,35 +108,47 @@ static const char *browsercmd[]  = { "firefox", NULL };
  * [ ] toggle bar? (mod + b)
 */
 
+
+
+
 static const Key keys[] = {
-	/* modifier                     key        function        argument */
+    /* commands */
+	{ MODKEY,                       XK_w,      killclient,     {0} },
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,                       XK_t,      togglefloating, {0} },
+    /* apps */
 	{ MODKEY,                       XK_1,      spawn,          {.v = browsercmd } },
-	{ MODKEY,                       XK_q,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_q,      spawn,          {.v = dmenucmd } },
+    /* focus window */
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	/*{ MODKEY,                       XK_Return, zoom,           {0} },*/
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_w,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	/*{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },*/
+    /* move window */
+    /* grow window */
+	{ MODKEY|ControlMask,           XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ControlMask,           XK_l,      setmfact,       {.f = +0.05} },
+    { MODKEY|ControlMask,           XK_k,      setcfact,       {.f = +0.25} },
+    { MODKEY|ControlMask,           XK_j,      setcfact,       {.f = -0.25} },
+    /* monitors */
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-    { MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.25} },
-    { MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.25} },
-    { MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
+
+
+	/* modifier                     key        function        argument */
+	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	/*{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },*/
+	/*{ MODKEY,                       XK_Return, zoom,           {0} },*/
+    /*{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },*/
 
 	TAGKEYS(                        XK_z,                      0)
 	TAGKEYS(                        XK_a,                      1)
@@ -142,7 +157,6 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_d,                      4)
 	TAGKEYS(                        XK_c,                      5)
 	TAGKEYS(                        XK_f,                      6)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
 /* button definitions */
