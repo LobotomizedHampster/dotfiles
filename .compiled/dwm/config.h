@@ -18,7 +18,7 @@ static const char col_black[]       = "#161414";
 static const char col_muted[]       = "#a89984";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_white, col_black, col_muted },
+	[SchemeNorm] = { col_white, col_black, col_black },
 	[SchemeSel]  = { col_black, col_white, col_white },
 };
 
@@ -55,7 +55,7 @@ static const Layout layouts[] = {
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	/*{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \*/
+	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	/*{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },*/
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -93,7 +93,7 @@ static const char *browsercmd[]  = { "firefox", NULL };
  * [/] grow columns [left/right] (mod + ctrl + [hl])
  * 
  * tags:
- * [ ] move view to [tag] (mod + [zaxsdcf])
+ * [/] move view to [tag] (mod + [zaxsdcf])
  * [ ] toggle view to [tag] (mod + 
  * [ ] move window to [tag] (mod + shift + [zaxsdcf])
  * [ ] view all tags (mod + \)
