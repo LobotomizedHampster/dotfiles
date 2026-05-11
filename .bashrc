@@ -5,40 +5,17 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-# random quote
-quote=$(curl -s https://zenquotes.io/api/random | \
-        jq -r '.[0] | "\(.q)\n    - \(.a)"')
-# checks to see if the limit has been reached
-if [[ ! "${quote,,}" == *"obtain an auth key"* ]]; then 
-    printf "$quote\n"
-fi
-
-# terminal prompt (looks like `[my_stuff]> ` when in $HOME/my_stuff/)
+# terminal prompt
 PS1="[\W]> "
 
-
-# see if ecrypted is decrypted
-source "$HOME/.local/bin/is-encrypted.sh"
-
-# global vars
-export TERMINAL=kitty
-export EDITOR=nvim
-export FITBIT_NO_KEYCHAIN=1 # used for disabling fitbit keyring? idek idc
 # for nvim grammer checker
 export JAVA_TOOL_OPTIONS="-Djdk.xml.totalEntitySizeLimit=0"
-
-# inits nvm
-export NVM_DIR="$HOME/.nvm"
-source /usr/share/nvm/init-nvm.sh
 
 # global vars
 source "$HOME/.bash_env"
 
 # PATH for local binaries
 export PATH="$HOME/.local/bin:$PATH:/home/noah/.local/bin"
-
-# GPG terminal fix
-export GPG_TTY=$(tty)
 
 # App aliases
 alias ra='ranger'
@@ -52,10 +29,6 @@ alias g="$HOME/.local/bin/git-script"
 # wrappers
 
 li() { "$FILE_MGR" "$HOME/my_stuff/Documents" --cmd="set show_hidden false"; }
-
-j() { "$FILE_MGR" "$LOGS"; }
-
-rtn() { "$EDITOR" "$DOCUMENTS_PATH/routine"; }
 
 # bluetooth reset function
 bt-reset() {
