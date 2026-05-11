@@ -18,3 +18,8 @@ README.md
 # git ignore
 .gitignore
 
+
+## OTHER ##
+
+# compiled files only need to exist in one directory
+.compiled/
