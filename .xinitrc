@@ -7,9 +7,9 @@ source "$HOME/.bash_env"
 
 # screen locker 
 # xss-lock -- "$HOME/.local/bin/lock"
-picom --daemon # compositer
-nitrogen --restore & # wallpaper manager
-conky & # background widgets
+#picom --daemon # compositer
+#nitrogen --restore & # wallpaper manager
+#conky & # background widgets
 
 
 #exec qtile start

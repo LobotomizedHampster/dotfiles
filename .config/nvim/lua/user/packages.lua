@@ -108,7 +108,7 @@ local plugins = {
           { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       }
   },
-
+--[[
   { -- markdown previews
       'MeanderingProgrammer/render-markdown.nvim',
       dependencies = { 'nvim-treesitter/nvim-treesitter', 
@@ -119,6 +119,7 @@ local plugins = {
       enabled = true,
       },
   }
+--]]
   
 
 }

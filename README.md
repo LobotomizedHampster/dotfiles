@@ -4,6 +4,29 @@
 - Sketch is my crappy little collection of dotfiles.
 - The files are managed via my custom built dotfile manager [duttsy](https://github.com/LobotomizedHampster/duttsy)
 
+## Color Scheme
+(add dynamicly generated images for colors (imagemajic))
+
+A modified Gruvbox theme made by me.
+| ANSI | ANSI NAME                | NAME               | HEX CODE |
+|------|--------------------------|--------------------|----------|
+| 00   | black                    | black / background | 161414   |
+| 01   | red                      | red                | b6343d   |
+| 02   | green                    | green              | 74971a   |
+| 03   | yellow                   | yellow             | d79921   |
+| 04   | blue                     | blue               | 458588   |
+| 05   | magenta                  | purple             | b16286   |
+| 06   | cyan                     | cyan               | 689d8a   |
+| 07   | white / light grey       | white / foreground | ebdbc2   |
+| 08   | bright black / dark grey | grey / muted       | a89984   |
+| 09   | birght red               | bright red         | e5585f   |
+| 10   | bright green             | bright green       | 87b73a   |
+| 11   | bright yellow            | bright yellow      | fcbe41   |
+| 12   | bright blue              | bright blue        | 5ed0d6   |
+| 13   | bright magenta           | pink               | d16286   |
+| 14   | bright cyan              | bright cyan        | 89edc8   |
+| 15   | bright white             | bright white       | ffeae2   |
+| NULL | NULL                     | orange             | d05d0e   |
 
 ## FILES BEING MANGED
 ```
