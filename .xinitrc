@@ -5,5 +5,7 @@ source "$HOME/.bash_env"
 
 nitrogen --restore & # wallpaper manager
 
+#mouse 
+
 #exec qtile start
 exec dwm

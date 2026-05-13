@@ -130,7 +130,7 @@ gethash(void)
 
 static void
 draw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
-     unsigned int len, unsigned int color)
+     unsigned int color)
 {
 	int screen, crtc;
 	XRRCrtcInfo* rrci;
@@ -145,19 +145,14 @@ draw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 				                      locks[screen]->rrsr,
 				                      locks[screen]->rrsr->crtcs[crtc]);
 				/* skip disabled crtc */
-				if (rrci->noutput > 0) {
-					if (len < 1)
-						len = 1;
-					int xoffset = (int) ((squaresize * len) + squarespacing * (len - 1)) / 2;
-					for (int i = 0; i < len; i++)
-						XFillRectangle(dpy,
-						               locks[screen]->win,
-						               locks[screen]->gc,
-						               rrci->x - xoffset + ((rrci->width - squaresize) / 2 ) + ((squaresize + squarespacing) * i),
-						               rrci->y + (rrci->height - squaresize) / 2,
-						               squaresize,
-						               squaresize);
-				}
+				if (rrci->noutput > 0)
+					XFillRectangle(dpy,
+					               locks[screen]->win,
+					               locks[screen]->gc,
+					               rrci->x + (rrci->width - squaresize) / 2,
+					               rrci->y + (rrci->height - squaresize) / 2,
+					               squaresize,
+					               squaresize);
 				XRRFreeCrtcInfo(rrci);
 			}
 		}
@@ -177,7 +172,7 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 {
 	XRRScreenChangeNotifyEvent *rre;
 	char buf[32], passwd[256], *inputhash;
-	int num, screen, running, failure;
+	int num, screen, running, failure, oldc;
 	unsigned int len, color;
 	KeySym ksym;
 	XEvent ev;
@@ -185,6 +180,7 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 	len = 0;
 	running = 1;
 	failure = 0;
+	oldc = INIT;
 
 	while (running && !XNextEvent(dpy, &ev)) {
 		if (ev.type == KeyPress) {
@@ -237,8 +233,9 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 				break;
 			}
 			color = len ? INPUT : ((failure || failonclear) ? FAILED : INIT);
-			if (running) {
-				draw(dpy, rr, locks, nscreens, len, color);
+			if (running && oldc != color) {
+				draw(dpy, rr, locks, nscreens, color);
+				oldc = color;
 			}
 		} else if (rr->active && ev.type == rr->evbase + RRScreenChangeNotify) {
 			rre = (XRRScreenChangeNotifyEvent*)&ev;
@@ -434,7 +431,7 @@ main(int argc, char **argv) {
 	}
 
 	/* draw the initial rectangle */
-	draw(dpy, &rr, locks, nscreens, 0, INIT);
+	draw(dpy, &rr, locks, nscreens, INIT);
 
 	/* everything is now blank. Wait for the correct password */
 	readpw(dpy, &rr, locks, nscreens, hash);
