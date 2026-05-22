@@ -1,11 +1,5 @@
 source "$HOME/.bash_env"
 
-#picom --daemon # compositer
-#conky & # background widgets
-
 nitrogen --restore & # wallpaper manager
-
-#mouse 
-
-#exec qtile start
-exec dwm
+slstatus &           # status bar
+exec dwm             # window manager

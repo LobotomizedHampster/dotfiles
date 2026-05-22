@@ -26,33 +26,13 @@ alias r="./.bi"
 alias x="startx"
 alias g="$HOME/.local/bin/git-script"
 
-# wrappers
 
 li() { "$FILE_MGR" "$HOME/my_stuff/Documents" --cmd="set show_hidden false"; }
 
-# bluetooth reset function
-bt-reset() {
-    {
-        echo "remove 70:37:3F:56:4D:B0"
-        echo "power off"
-        sleep 1
-        echo "power on"
-        sleep 1
-        echo "agent on"
-        echo "default-agent"
-        sleep 1
-        echo "scan on"
-        sleep 10
-        echo "trust 70:37:3F:56:4D:B0"
-        echo "connect 70:37:3F:56:4D:B0"
-        sleep 10
-    } | bluetoothctl
-}
-
-# sleeping function
+# sleep cmd
 sp() {
-    source "$HOME/.local/bin/lock"
-    sleep 3
+    slock &
+    sleep 0.2
     systemctl suspend
 }
 
