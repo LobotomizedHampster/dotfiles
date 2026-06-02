@@ -1,53 +1,81 @@
 #!/bin/bash
 source "$HOME/.bash_env"
 
+FILE_PATH="$HOME/.config/recap.conf"
 
-# asks for a specific goal, then returns either "#" or "-" for yes or no
-promptCheck() {
-	local PROMPT="$1"
-
-	while true; do
-		read -r -p "$PROMPT" PROMPT_VAR
-
-		case "$PROMPT_VAR" in
-			y|Y|yes|YES)
-				echo "# "
-		        	break
-		        	;;
-		    	n|N|no|NO)
-				echo "- "
-		        	break
-		        	;;
-		    	*)
-		        	;;
-			esac
-	done
+print_file() {
+    printf "\n"
+    cat "$FILE_PATH"
 }
 
-# create a bunch of vars from the function defined above
-WAKE_UP=$(promptCheck "Did you wake up on time?: ")
-WORK_OUT=$(promptCheck "Did you work out?: ")
-TEETH=$(promptCheck "Did you brush your teeth?: ")
-GOALS=$(promptCheck "Did you work on your goals?: ")
-STRETCH=$(promptCheck "Did you stretch?: ")
-EAT=$(promptCheck "Did you eat well?: ")
-TV=$(promptCheck "Did you avoid TV?: ")
-KHAN=$(promptCheck "Did you work on Khan?: ")
+edit_config() {
+    "$EDITOR" "$FILE_PATH"
+}
 
-DATE=$(date +%m-%d-%y)
+print_help() {
+    printf "
+-h --help   print this menu
+-e --edit   edit the config file
+-p --print  print the config file
+"
+}
+
+YES_VALUE="#"
+NO_VALUE=" "
+MAYBE_VALUE="-"
+write_answers() {
+    local prompts answers q answer DATE answer_str
+
+    # gets config file questions as an array
+    mapfile -t prompts < <(awk '/^[0-9]. /' "$FILE_PATH")
+    answers=()
+
+    # prompt user with questions and add answers to an array
+    for q in "${prompts[@]}"; do
+        while true; do
+            read -r -p "$q" answer
+            case $answer in
+                y|Y|yes|YES)
+                    answers+=("$YES_VALUE")
+                    break
+                    ;;
+                n|N|no|NO)
+                    answers+=("$NO_VALUE")
+                    break
+                    ;;
+                m|M|maybe|MAYBE)
+                    answers+=("$MAYBE_VALUE")
+                    break
+                    ;;
+            esac
+        done
+    done
+
+    # get date and answers in a string
+    DATE=$(date +%m-%d-%y)
+    answer_str="${answers[*]}"
+
+    # append text to the file
+    printf "%s | %s\n" "$DATE" "$answer_str" >> "$FILE_PATH"
+
+    print_file
+}
 
 
+# look for arguments
+ARG="$1"
 
-
-# append the text to the end of the file 
-printf "%s | %s%s%s%s%s%s%s%s\n" "$DATE" \
-	"$WAKE_UP" "$WORK_OUT" "$TEETH" \
-	"$GOALS" "$STRETCH" "$EAT" "$TV" "$KHAN"\
-	>> "$DOCUMENTS_PATH/recap"
-
-# print the new file 
-printf "\n\n"
-
-
-# show the modified file in the terminal
-cat "$DOCUMENTS_PATH/recap"
+case "$ARG" in
+    -p|p|--print|print)
+        print_file
+        ;;
+    -h|h|--help|help)
+        print_help
+        ;;
+    -e|e|--edit|edit)
+        edit_config
+        ;;
+    *)
+        write_answers
+        ;;
+esac
