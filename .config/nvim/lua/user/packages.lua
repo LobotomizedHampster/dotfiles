@@ -57,31 +57,31 @@ local plugins = {
     end
   },
 
-  -- Syntax Highlighting
+-- Syntax Highlighting
   {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "main",  -- New rewritten branch
-    build = ":TSUpdate",
-    config = function()
-      local ts = require("nvim-treesitter")
-      local parsers = { 
-        "lua", 
-        "python", 
-        "vim", 
-        "vimdoc", 
-        "bash", 
-      }
-
-      for _, parser in ipairs(parsers) do
-        pcall(ts.install, parser)
-      end
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          pcall(vim.treesitter.start)
-        end,
-      })
-    end,
-  },
+      "nvim-treesitter/nvim-treesitter",
+      branch = "main",  -- New rewritten branch
+      build = ":TSUpdate",
+      config = function()
+        local ts = require("nvim-treesitter")
+        local parsers = { 
+            "lua", 
+            "python", 
+            "vim", 
+            "vimdoc", 
+            "bash", 
+            "markdown"}
+  
+        for _, parser in ipairs(parsers) do
+          pcall(ts.install, parser)
+        end
+        vim.api.nvim_create_autocmd("FileType", {
+          callback = function()
+            pcall(vim.treesitter.start)
+          end,
+        })
+      end,
+    },
 
   -- Grammer checker
   {
@@ -101,41 +101,26 @@ local plugins = {
   },
 
   {
-    'nvim-telescope/telescope.nvim', version = '*',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      -- optional but recommended
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    }
+      'nvim-telescope/telescope.nvim', version = '*',
+      dependencies = {
+          'nvim-lua/plenary.nvim',
+          -- optional but recommended
+          { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      }
   },
-  -- markdown previews
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 
-    'nvim-mini/mini.icons', 
-    'nvim-tree/nvim-web-devicons' }, 
-    opts = {
+--[[
+  { -- markdown previews
+      'MeanderingProgrammer/render-markdown.nvim',
+      dependencies = { 'nvim-treesitter/nvim-treesitter', 
+                       'nvim-mini/mini.icons' }, 
+      ---@module 'render-markdown'
+      ---@type render.md.UserConfig
+      opts = {
       enabled = true,
-      heading = {
-        sign = false,
-        icons = { '󰎤 ', '󰎧 ', '󰎪 ', '󰎭 ', '󰎱 ', '󰎳 ' },
-        width = 'full', -- either block or full
-        --position = 'inline',
-        left_pad = 0,
-        right_pad  = 1,
-        min_width = 30,
       },
-      checkbox = {
-        unchecked = { icon = '󰄱 ' },
-        checked = { icon = '󰡖 ' },
-        custom = { todo = { rendered = '󰄗 ' } },
-      },
-      code = {
-        sign = false,
-      },
-    },
   }
-
+--]]
+  
 
 }
 
@@ -146,6 +131,6 @@ require("lazy").setup(plugins)
 
 -- checkbox plugin
 vim.keymap.set("n", " ", 
-":lua require('toggle-checkbox').toggle()<CR>", 
-{ silent = true })
+    ":lua require('toggle-checkbox').toggle()<CR>", 
+    { silent = true })
 require("toggle-checkbox")
