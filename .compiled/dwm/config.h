@@ -1,9 +1,19 @@
+/* TODO:
+ * [ ] add media/volume widgets
+*/
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Hermit:size=10" };
+static const char dmenufont[]       = "Hermit:size=10";
+static const char col_gray1[]       = "#222222";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_cyan[]        = "#005577";
 static const char col_white[]       = "#ebdbc2";
 static const char col_black[]       = "#161414";
 static const char col_muted[]       = "#a89984";
@@ -17,6 +27,12 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "z", "a", "x", "s", "d", "c", "f" };
 
 static const Rule rules[] = {
+	/* xprop(1):
+	 *	WM_CLASS(STRING) = instance, class
+	 *	WM_NAME(STRING) = title
+	 */
+	/* class      instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
@@ -25,12 +41,13 @@ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
-static const int refreshrate = 60;   /* refresh rate (per second) for client move/resize */
+static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
 
 #include "doublecolumn.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "I|I",      doublecolumn },    /* first entry is default */
+	{ "[]=",      tile },   
 	{ " * ",      NULL },    /* no layout function means floating behavior */
 };
 
@@ -40,29 +57,42 @@ static const Layout layouts[] = {
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	/*{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },*/
+
+/* helper for spawning shell commands in the pre dwm-5.0 fashion */
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static char launchermon[2] = "0"; /* component of launchercmd, manipulated in spawn() */
-static const char *termcmd[]        = { "st", NULL };
-static const char *launchercmd[]    = { "dmenu_run", "-m", launchermon, NULL };
-static const char *browsercmd[]     = { "firefox", NULL };
-static const char *screenshotcmd[]  = { "flameshot", "gui", NULL };
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
+static const char *termcmd[]  = { "st", NULL };
+static const char *browsercmd[]  = { "firefox", NULL };
 
 /* HOTKEYS TODO:
  *
+ * commands:
+ * [/] close window (mod + w)
+ * [/] quit (mod + shift + q)
+ * [/] toggle floating window (mod + t)
+ *
  * apps:
- * [ ] launch app (mod + [1-2])
- *     [/] browser
- *     [ ] music
+ * [ ] launch app (mod + [1-3])
  * [/] launch terminal (mod + return)
  * [/] launch launcher (mod + q)
- * [/] launch screenshot util (mod + y)
- * [/] toggle bar (mod + b)
+ * [ ] launch screenshot util (mod + y)
+ *
+ * focus window:
+ * [/] focus [next/previous] window (mod + [jk])
+ * [/] foucs [first/last] window (mod + [hl])
  *
  * move window:
  * [ ] move window [up/down] in stack (mod + [jk])
  * [ ] move window to [left/right] stack (mod + shift + [hl])
  *
+ * grow window:
+ * [/] grow window [up/down] (mod + ctrl + [jk])
+ * [/] grow columns [left/right] (mod + ctrl + [hl])
+ * 
  * tags:
  * [/] move view to [tag] (mod + [zaxsdcf])
  * [ ] toggle view to [tag] (mod + 
@@ -72,56 +102,78 @@ static const char *screenshotcmd[]  = { "flameshot", "gui", NULL };
  * monitors:
  * [ ] focus other monitor (mod + tab)
  * [ ] move window to other monitor (mod + shift + tab)
+ *
+ * may add:
+ * [ ] media keys?
+ * [ ] volume keys?
+ * [ ] toggle bar? (mod + b)
 */
+
+
+
 
 static const Key keys[] = {
     /* commands */
-	{ MODKEY,             XK_w,      killclient,     {0} },
-	{ MODKEY|ShiftMask,   XK_q,      quit,           {0} },
-	{ MODKEY,             XK_t,      togglefloating, {0} },
-	{ MODKEY,             XK_b,      togglebar,      {0} },
-	{ MODKEY,             XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_w,      killclient,     {0} },
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,                       XK_t,      togglefloating, {0} },
     /* apps */
-	{ MODKEY,             XK_1,      spawn,          {.v = browsercmd    } },
-	{ MODKEY,             XK_Return, spawn,          {.v = termcmd       } },
-	{ MODKEY,             XK_q,      spawn,          {.v = launchercmd   } },
-	{ MODKEY,             XK_y,      spawn,          {.v = screenshotcmd } },
+	{ MODKEY,                       XK_1,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_q,      spawn,          {.v = dmenucmd } },
     /* focus window */
-	{ MODKEY,             XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,             XK_k,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+    /* move window */
     /* grow window */
-	{ MODKEY|ControlMask, XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY|ControlMask, XK_l,      setmfact,       {.f = +0.05} },
-    { MODKEY|ControlMask, XK_k,      setcfact,       {.f = +0.25} },
-    { MODKEY|ControlMask, XK_j,      setcfact,       {.f = -0.25} },
+	{ MODKEY|ControlMask,           XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ControlMask,           XK_l,      setmfact,       {.f = +0.05} },
+    { MODKEY|ControlMask,           XK_k,      setcfact,       {.f = +0.25} },
+    { MODKEY|ControlMask,           XK_j,      setcfact,       {.f = -0.25} },
     /* monitors */
-	{ MODKEY,             XK_Tab,    focusmon,       {.i = -1 } },
-	{ MODKEY|ShiftMask,   XK_Tab,    tagmon,         {.i = -1 } },
+	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
-    /* tags */
-	TAGKEYS(XK_z, 0)
-	TAGKEYS(XK_a, 1)
-	TAGKEYS(XK_x, 2)
-	TAGKEYS(XK_s, 3)
-	TAGKEYS(XK_d, 4)
-	TAGKEYS(XK_c, 5)
-	TAGKEYS(XK_f, 6)
+
+	/* modifier                     key        function        argument */
+	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	/*{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },*/
+	/*{ MODKEY,                       XK_Return, zoom,           {0} },*/
+    /*{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },*/
+
+	TAGKEYS(                        XK_z,                      0)
+	TAGKEYS(                        XK_a,                      1)
+	TAGKEYS(                        XK_x,                      2)
+	TAGKEYS(                        XK_s,                      3)
+	TAGKEYS(                        XK_d,                      4)
+	TAGKEYS(                        XK_c,                      5)
+	TAGKEYS(                        XK_f,                      6)
 };
 
 /* button definitions */
-/* click can be:
- * ClkTagBar
- * ClkLtSymbol 
- * ClkStatusText 
- * ClkWinTitle 
- * ClkClientWin 
- * ClkRootWin 
-*/
+/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click         event   button   function   argument */
-	{ ClkLtSymbol,   0,      Button1, setlayout, {0}                },
-	{ ClkLtSymbol,   0,      Button3, setlayout, {.v = &layouts[2]} },
-	{ ClkStatusText, 0,      Button2, spawn,     {.v = termcmd }    },
-	{ ClkClientWin,  MODKEY, Button1, movemouse, {0}                },
+	/* click                event mask      button          function        argument */
+	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	/*{ ClkWinTitle,          0,              Button2,        zoom,           {0} },*/
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkTagBar,            0,              Button1,        view,           {0} },
+	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
+	/*{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },*/
+	/*{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },*/
 };
 
