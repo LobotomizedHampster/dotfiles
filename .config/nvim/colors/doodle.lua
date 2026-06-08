@@ -20,7 +20,7 @@ local c = {
   cyan     = "#689d8a",
   blue     = "#458588",
   
-  hl       = "#302d2d",
+  hl       = "#3c3836",
 }
 
 -- UI
@@ -64,69 +64,3 @@ set(0, "DraftBoldItalic", { italic = true, bold = true })
 set(0, "DraftEditInsert", { fg = c.green })
 set(0, "DraftEditRemove", { fg = c.red })
 set(0, "DraftTodo",       { fg = c.yellow, bold = true })
-
--- MARKDOWN SYNTAX
---[[
-vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", { fg = c.fg, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", { fg = c.fg, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", { fg = c.fg, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", { fg = c.fg, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", { fg = c.fg, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.6.markdown", { fg = c.fg, bold = true })
-
-
-vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { bg = c.purple })
-vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { bg = c.pink   })
-vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { bg = c.blue   })
-vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { bg = c.cyan   })
-vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { bg = c.green  })
-vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { bg = c.yellow })
---]]
-
-vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", { fg = c.purple, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", { fg = c.pink, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", { fg = c.blue, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", { fg = c.cyan, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", { fg = c.green, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.6.markdown", { fg = c.yellow, bold = true })
-
-
-vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { bg = c.hl })
-
-
-
-
---[[
-󰋽 Note,    
-󰌶 Tip,     
-󰅾 Important
-󰀪 Warning, 
-󰳦 Caution, 
-󰨸 Abstract,
-󰨸 Summary, 
-󰨸 Tldr,    
-󰋽 Info,    
-󰗡 Todo,    
-󰌶 Hint,    
-󰄬 Success, 
-󰄬 Check,   
-󰄬 Done,    
-󰘥 Question,
-󰘥 Help,    
-󰘥 Faq,     
-󰀪 Attention
-󰅖 Failure, 
-󰅖 Fail,    
-󰅖 Missing, 
-󱐌 Danger,  
-󱐌 Error,   
-󰨰 Bug,     
-󰉹 Example, 
-󱆨 Quote,   
-󱆨 Cite,    
---]]

@@ -27,6 +27,7 @@ A modified Gruvbox theme made by me.
 | 14   | bright cyan              | bright cyan        | 89edc8   |
 | 15   | bright white             | bright white       | ffeae2   |
 | NULL | NULL                     | orange             | d05d0e   |
+
 ## FILES BEING MANGED
 ```
 ./
