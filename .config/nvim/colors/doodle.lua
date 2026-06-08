@@ -1,4 +1,4 @@
-vim.cmd("highlight clear")
+
 vim.cmd("set termguicolors")
 
 vim.g.colors_name = "doodle"
@@ -49,7 +49,7 @@ set(0, "@punctuation", { fg = c.fg })
 set(0, "@variable",    { fg = c.blue })
 set(0, "@property",    { fg = c.pink })
 set(0, "PreProc",      { fg = c.pink })
-set(0, "ColorColumn",  { fg = c.muted, bg = c.hl })
+set(0, "ColorColumn",  { bg = c.hl })
 set(0, "Special",      { fg = c.cyan, bold = true })
 
 -- DIFF DYNTAX
@@ -67,17 +67,25 @@ set(0, "DraftTodo",       { fg = c.yellow, bold = true })
 
 
 --- MARKDOWN SYNTAX
-vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", { fg = c.purple, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", { fg = c.pink, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", { fg = c.blue, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", { fg = c.cyan, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", { fg = c.green, bold = true })
-vim.api.nvim_set_hl(0, "@markup.heading.6.markdown", { fg = c.yellow, bold = true })
+set(0, "@markup.heading.1.markdown", { fg = c.purple, bold = true })
+set(0, "@markup.heading.2.markdown", { fg = c.pink, bold = true })
+set(0, "@markup.heading.3.markdown", { fg = c.blue, bold = true })
+set(0, "@markup.heading.4.markdown", { fg = c.cyan, bold = true })
+set(0, "@markup.heading.5.markdown", { fg = c.green, bold = true })
+set(0, "@markup.heading.6.markdown", { fg = c.yellow, bold = true })
 
 
-vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { bg = c.hl })
-vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { bg = c.hl })
+set(0, "RenderMarkdownH1Bg", { bg = c.hl })
+set(0, "RenderMarkdownH2Bg", { bg = c.hl })
+set(0, "RenderMarkdownH3Bg", { bg = c.hl })
+set(0, "RenderMarkdownH4Bg", { bg = c.hl })
+set(0, "RenderMarkdownH5Bg", { bg = c.hl })
+set(0, "RenderMarkdownH6Bg", { bg = c.hl })
+
+
+set(0, "RenderMarkdownLanguageName", { bg = c.hl, fg = c.fg, bold = true })
+set(0, "@markup.raw.markdown_inline", { fg = c.fg })
+
+set(0, "@markup.link.markdown_inline",       { fg = c.cyan, italic = true })
+set(0, "@markup.link.label.markdown_inline", { fg = c.cyan, italic = true })
+set(0, "@markup.link.url.markdown_inline",   { fg = c.cyan, italic = true })

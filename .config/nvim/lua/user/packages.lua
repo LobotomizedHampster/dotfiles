@@ -70,8 +70,8 @@ local plugins = {
         "vim", 
         "vimdoc", 
         "bash", 
+        "markdown",
       }
-
       for _, parser in ipairs(parsers) do
         pcall(ts.install, parser)
       end
@@ -132,12 +132,32 @@ local plugins = {
       },
       code = {
         sign = false,
+        width = 'block',
+        language_border = ' ',
+        language_left = ' █',
+        language_right = '█',
+        language_icon = false,
+        highlight_language = 'RenderMarkdownLanguageName',
+        left_pad = 2,
+        right_pad = 2,
       },
-    },
+      dash = { left_margin = 1 },
+      link = {
+        enabled = true,
+        render_modes = true,
+        highlight = 'RenderMarkdownLink',
+        highlight_title = 'RenderMarkdownLinkTitle',
+
+      },
+      pipe_table = {
+        head = 'RenderMarkdownTableRow',
+        row = 'RenderMarkdownTableRow'
+      }
+    }
   }
-
-
 }
+
+
 
 -- Load lazy plugins
 require("lazy").setup(plugins)
