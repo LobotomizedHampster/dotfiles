@@ -11,3 +11,9 @@ end, {})
 vim.keymap.set("v", "<C-c>", "\"+y",  { noremap = true, silent = true })
 -- Set ctrl + x to cut text
 vim.keymap.set("v", "<C-x>", "d",  { noremap = true, silent = true })
+
+-- Change window size
+vim.keymap.set("n", "<C-H>", "<C-w><",  { noremap = true, silent = true })
+vim.keymap.set("n", "<C-J>", "<C-w>-",  { noremap = true, silent = true })
+vim.keymap.set("n", "<C-K>", "<C-w>+",  { noremap = true, silent = true })
+vim.keymap.set("n", "<C-L>", "<C-w>>",  { noremap = true, silent = true })
