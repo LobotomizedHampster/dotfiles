@@ -1,60 +1,16 @@
 #!/bin/bash
 
 # default apps
-export TERMINAL=kitty
-export VISUAL=nvim
-export EDITOR=nvim
-export FILE_MGR=ranger
-export FILE_MGR_FULL="kitty -e ranger"
-export FONT="CaskaydiaMono NF"
-export BROWSER="zen-browser -P \"Default\""
-export MUSIC="zen-browser -P \"Music\""
+export EDITOR="nvim"
+export BROWSER="firefox"
+export AUDIO_PLAYER="mpv"
+export VIDEO_PLAYER="${AUDIO_PLAYER}"
+export VECTOR_EDITOR="inkscape"
+export IMAGE_EDITOR="gimp"
+export DOCUMENT_EDITOR="libreoffice"
+
 
 # file paths
 export STUFF_PATH="$HOME/my_stuff"
 export DOCUMENTS_PATH="$HOME/my_stuff/Documents"
-export LOGS="$DOCUMENTS_PATH/.stlogs.archived.20260117-184304/64-55-82_cQfPxKyC/archived_logs-64-55-82_cQfPxKyC"
 export CONFIG_PATH="$HOME/.dotfiles"
-
-# colorscheme (rrggbb)
-export OPACITY="65"
-export HEX_OPACITY="a3" # the opacity in hexadecimal
-
- 
-export BLACK="000000"
-export RED="ff8080"
-export GREEN="80ffaa"
-export YELLOW="d8d877"
-export BLUE="88bbff"
-export PURPLE="bf99ee"
-export CYAN="00bfff"
-export WHITE="ffffff"
-export GREY="bbbbbb"
-export BRIGHT_RED="ff5555"
-export BRIGHT_GREEN="55ff55"
-export BRIGHT_YELLOW="ffff55"
-export BRIGHT_PURPLE="5555ff"
-export BRIGHT_PINK="ff55ff"
-export BRIGHT_CYAN="33dfff"
-export BRIGHT_WHITE="ffffff"
- 
-# colorscheme with opacity (rrggbbaa)
-export TRANSPARENT="${BLACK}00"
-export ALPHA_BLACK="$BLACK$HEX_OPACITY"
-export ALPHA_RED="$RED$HEX_OPACITY"
-export ALPHA_GREEN="$GREEN$HEX_OPACITY"
-export ALPHA_YELLOW="$YELLOW$HEX_OPACITY"
-export ALPHA_BLUE="$BLUE$HEX_OPACITY"
-export ALPHA_PURPLE="$PURPLE$HEX_OPACITY"
-export ALPHA_CYAN="$CYAN$HEX_OPACITY"
-export ALPHA_WHITE="$WHITE$HEX_OPACITY"
-export ALPHA_GREY="$GREY$HEX_OPACITY"
-export ALPHA_BRIGHT_RED="$BRIGHT_RED$HEX_OPACITY"
-export ALPHA_BRIGHT_GREEN="$BRIGHT_GREEN$HEX_OPACITY"
-export ALPHA_BRIGHT_YELLOW="$BRIGHT_YELLOW$HEX_OPACITY"
-export ALPHA_BRIGHT_PURPLE="$BRIGHT_PURPLE$HEX_OPACITY"
-export ALPHA_BRIGHT_PINK="$BRIGHT_PINK$HEX_OPACITY"
-export ALPHA_BRIGHT_CYAN="$BRIGHT_CYAN$HEX_OPACITY"
-export ALPHA_BRIGHT_WHITE="$BRIGHT_WHITE$HEX_OPACITY"
-
-

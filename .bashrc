@@ -17,6 +17,11 @@ source "$HOME/.bash_env"
 # PATH for local binaries
 export PATH="$HOME/.local/bin:$PATH:/home/noah/.local/bin"
 
+# Korean IME
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
 # App aliases
 alias ra='ranger'
 alias vim='nvim'
@@ -35,4 +40,3 @@ sp() {
     sleep 0.2
     systemctl suspend
 }
-
