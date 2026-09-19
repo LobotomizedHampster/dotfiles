@@ -1,6 +1,6 @@
 void
 doublecolumn(Monitor *m) {
-    unsigned int n, row, lrow, rrow, cn, lw, rw, rn, cx, cy, cw, ch, i, cyn, tyl, tyr;
+    unsigned int n, lrow, lw, rw, cx, cy, cw, ch, tyl, tyr;
     const int col = 2;
     float rfacts = 0;
     float lfacts = 0;
@@ -24,73 +24,39 @@ doublecolumn(Monitor *m) {
     // Get number of windows in left row
     lrow = n/col;
 
-    // Get number of windows in right row (accounts for odd number of windows)
-    if(n % 2 != 0) {
-        rrow = lrow + 1;
-    } else {
-        rrow = lrow;
-    }
-
-    cn = 0; /* current column number */
-    rn = 0; /* current row number */
-
     // Get each window's resize factor
-    for(i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
-        if(cn) {
-            rfacts += c->cfact;
-        } else {
+    int i = 0;
+    for(c = nexttiled(m->clients); c; i++, c = nexttiled(c->next)) {
+        if(!(i >= lrow)) {
             lfacts += c->cfact;
-        }
-        rn++;
-        if((cn == 0 && rn >= lrow) || 
-
-            rn = 0;
-            cn = 1;
+        } else {
+            rfacts += c->cfact;
         }
     }
 
-
-    cn = 0; /* current column number */
-    rn = 0; /* current row number */
-    tyl = 0; /* y pos for window placment */
+    tyl = 0;
     tyr = 0; 
     rw = m->ww * (1 - m->mfact);
     lw = m->ww * m->mfact;
-    for(c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
-        c->bw = borderpx;
-        /* determine which column the window is in */
-        if(cn) { /* right column */
-            row = rrow;
-            cw = rw;
-            cx = m->wx + lw; /* window col pos */
-            ch = m->wh * (c->cfact / rfacts);
-            cy = tyr;
-        } else { /* left column */
-            row = lrow;
-            cw = lw;
-            cx = m->wx; /* window col pos */
-            ch = m->wh * (c->cfact / lfacts);
+    i = 0;
+    for(c = nexttiled(m->clients); c; i++, c = nexttiled(c->next)) {
+        c->bw = borderpx; // Reset the border
+    
+        if(!(i >= lrow)) { // Left column
+            cx = m->wx;
             cy = tyl;
-        }
-
-        /*cy = m->wy + rn*ch;*/
-        /* for border on either side */
-        resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
-
-        if(cn) {
-            tyr += ch;
-        } else {
+            cw = lw;
+            ch = m->wh * (c->cfact / lfacts);
             tyl += ch;
+        } else { // Right column
+            cx = m->wx + lw; 
+            cy = tyr;
+            cw = rw;
+            ch = m->wh * (c->cfact / rfacts);
+            tyr += ch;
         }
 
-
-        rn++;
-
-        /* check if either column is full, and reset rn */
-        if((cn == 0 && rn >= lrow) || 
-                (cn == 1 && rn >= rrow)) {
-            rn = 0;
-            cn = 1;
-        }
+        // Place window on the screen
+        resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
     }
 }
