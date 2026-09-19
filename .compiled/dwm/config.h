@@ -45,7 +45,7 @@ static const Layout layouts[] = {
 static char launchermon[2] = "0"; /* component of launchercmd, manipulated in spawn() */
 static const char *termcmd[]        = { "st", NULL };
 static const char *launchercmd[]    = { "dmenu_run", "-m", launchermon, NULL };
-static const char *browsercmd[]     = { "firefox", NULL };
+static const char *browsercmd[]     = { "firefox", "-P", "main", NULL };
 static const char *screenshotcmd[]  = { "flameshot", "gui", NULL };
 
 /* HOTKEYS TODO:

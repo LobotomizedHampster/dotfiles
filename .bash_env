@@ -8,7 +8,8 @@ export VIDEO_PLAYER="${AUDIO_PLAYER}"
 export VECTOR_EDITOR="inkscape"
 export IMAGE_EDITOR="gimp"
 export DOCUMENT_EDITOR="libreoffice"
-
+export TERMINAL="st"
+export FILE_MANAGER="ranger"
 
 # file paths
 export STUFF_PATH="$HOME/my_stuff"

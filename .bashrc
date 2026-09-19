@@ -26,6 +26,8 @@ export XMODIFIERS=@im=fcitx
 alias ra='ranger'
 alias vim='nvim'
 alias nivm='nvim' # i keep fucking doing this
+alias nano='nvim' # i hate nano
+alias reg-nano='nano'
 alias reg-vim='vim'
 alias r="./.bi"
 alias x="startx"
