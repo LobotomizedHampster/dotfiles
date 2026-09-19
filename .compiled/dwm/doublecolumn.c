@@ -8,24 +8,23 @@ doublecolumn(Monitor *m) {
 
     // Get number of non-minimized and tiled windows
     for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+
     // Return if there is no windows to format
     if(n == 0) 
         return;
 
-    /* column is only ever 1 when there is one window, otherwise its 2 */
+    // Remove the border on windows when there is only one 
     if(n == 1) {
-        // Remove the border on windows when there is only one 
         c = m->clients;
         c->bw = 0;
         resize(c, 0, 0, m->ww, m->wh, False);
         return;
     }
     
-
+    // Get number of windows in left row
     lrow = n/col;
 
-    /* when n is odd, set rrows to one higher than lrows, accounts for 
-     * unbalanced windows */
+    // Get number of windows in right row (accounts for odd number of windows)
     if(n % 2 != 0) {
         rrow = lrow + 1;
     } else {
@@ -35,6 +34,7 @@ doublecolumn(Monitor *m) {
     cn = 0; /* current column number */
     rn = 0; /* current row number */
 
+    // Get each window's resize factor
     for(i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
         if(cn) {
             rfacts += c->cfact;
@@ -43,7 +43,7 @@ doublecolumn(Monitor *m) {
         }
         rn++;
         if((cn == 0 && rn >= lrow) || 
-                (cn == 1 && rn >= rrow)) {
+
             rn = 0;
             cn = 1;
         }
@@ -54,8 +54,8 @@ doublecolumn(Monitor *m) {
     rn = 0; /* current row number */
     tyl = 0; /* y pos for window placment */
     tyr = 0; 
-    rw = (col - 1) ? m->ww * (1 - m->mfact) : m->ww;
-    lw = (col - 1) ? m->ww * m->mfact : m->ww;
+    rw = m->ww * (1 - m->mfact);
+    lw = m->ww * m->mfact;
     for(c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
         c->bw = borderpx;
         /* determine which column the window is in */
