@@ -1,6 +1,7 @@
 void
 doublecolumn(Monitor *m) {
-    unsigned int n, col, row, lrow, rrow, cn, lw, rw, rn, cx, cy, cw, ch, i, cyn, tyl, tyr;
+    unsigned int n, row, lrow, rrow, cn, lw, rw, rn, cx, cy, cw, ch, i, cyn, tyl, tyr;
+    const int col = 2;
     float rfacts = 0;
     float lfacts = 0;
     Client *c;
@@ -16,12 +17,10 @@ doublecolumn(Monitor *m) {
         // Remove the border on windows when there is only one 
         c = m->clients;
         c->bw = 0;
-        resize(c, 0, 0, m->ww, m->ww, False);
+        resize(c, 0, 0, m->ww, m->wh, False);
         return;
-
-    } else {
-        col = 2;
     }
+    
 
     lrow = n/col;
 
